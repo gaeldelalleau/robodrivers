@@ -1,0 +1,3 @@
+#blacklisted-names = ["some_bad_name", "some_other_bad_name"]
+#cyclomatic-complexity-threshold = 30
+

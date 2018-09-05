@@ -1,0 +1,17 @@
+[package]
+name = "robodrivers"
+version = "0.1.0"
+authors = ["Gaël Delalleau <REDACTED@REDACTED.REDACTED>"]
+description = "Robodrivers core engine"
+
+# Prevent publishing by mistake 
+publish = false
+
+# Setting the license field instead of license-file as an additional safeguard
+# against accidental publishing (as the license field is validated against a
+# whitelist by crates.io)
+#license-file = "LICENSE.md"
+license = "Proprietary license file - DO NOT DISTRIBUTE"
+
+[dependencies]
+
