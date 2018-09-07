@@ -3,311 +3,929 @@ id: 0
 map:
   cells:
     - - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items:
-          - BASE
+          - PRODUCER:
+              resource:
+                GAS: 9
+              cooldown: 28
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items:
-          - BASE
+          - PRODUCER:
+              resource:
+                GAS: 5
+              cooldown: 20
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items:
-          - BASE
+          - PRODUCER:
+              resource:
+                GAS: 3
+              cooldown: 16
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items:
-          - BASE
+          - PRODUCER:
+              resource:
+                GAS: 1
+              cooldown: 12
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
+        items: []
     - - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
-      - block: WALL
-        items:
-          - BASE
+        items: []
     - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items:
+          - PRODUCER:
+              resource:
+                GAS: 1
+              cooldown: 12
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
         items:
           - BASE
       - block: WALL
-        items:
-          - BASE
+        items: []
+    - - block: WALL
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
       - block: WALL
-        items:
-          - BASE
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
 teams:
   - id: 1
     name: team 1
-    color: "#bbbbbb"
+    color: "#aa0000"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX1
     car:
       x: 0
       "y": 0
@@ -316,9 +934,9 @@ teams:
       state: STOPPED
   - id: 2
     name: team 2
-    color: "#bbbbbb"
+    color: "#00aa00"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX2
     car:
       x: 0
       "y": 0
@@ -327,9 +945,9 @@ teams:
       state: STOPPED
   - id: 3
     name: team 3
-    color: "#bbbbbb"
+    color: "#0000aa"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX3
     car:
       x: 0
       "y": 0
@@ -338,9 +956,9 @@ teams:
       state: STOPPED
   - id: 4
     name: team 4
-    color: "#bbbbbb"
+    color: "#aaaa00"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX4
     car:
       x: 0
       "y": 0
@@ -349,9 +967,9 @@ teams:
       state: STOPPED
   - id: 5
     name: team 5
-    color: "#bbbbbb"
+    color: "#00aaaa"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX5
     car:
       x: 0
       "y": 0
@@ -360,9 +978,9 @@ teams:
       state: STOPPED
   - id: 6
     name: team 6
-    color: "#bbbbbb"
+    color: "#aaaaaa"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX6
     car:
       x: 0
       "y": 0
@@ -371,9 +989,9 @@ teams:
       state: STOPPED
   - id: 7
     name: team 7
-    color: "#bbbbbb"
+    color: "#aa00aa"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX7
     car:
       x: 0
       "y": 0
@@ -382,9 +1000,9 @@ teams:
       state: STOPPED
   - id: 8
     name: team 8
-    color: "#bbbbbb"
+    color: "#44aaff"
     score: 0
-    token: XXXXXXXXXXX
+    token: XXX8
     car:
       x: 0
       "y": 0

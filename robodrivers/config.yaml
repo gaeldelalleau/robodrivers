@@ -2,7 +2,7 @@
 flags:
   - score: 1000
     flag: "ICON{XXXXXXXXXX}"
-  - score: 1000
-    flag: "ICON{XXXXXXXXXX}"
-  - score: 1000
-    flag: "ICON{XXXXXXXXXX}"
+  - score: 5000
+    flag: "ICON{YYYYYYYYYYY}"
+  - score: 20000
+    flag: "ICON{ZZZZZZZZZZZZZ}"

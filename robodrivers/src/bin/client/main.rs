@@ -68,7 +68,7 @@ lazy_static! {
 }
 
 macro_rules! logger {
-    () => ( LOGGER.lock().expect("Error while trying to get lock for LOGGER")[0] )
+    () => ( LOGGER.lock().expect("Error while trying to acquire lock for LOGGER")[0] )
 }
 
 pub mod commands {
@@ -358,20 +358,73 @@ impl Config {
 fn recreate_game_state() -> () {
     let mut game_state = GameState::default();
     {
+        let nb_teams = 8;
+        let team_colors = vec![ "#aa0000", "#00aa00", "#0000aa", "#aaaa00", "#00aaaa", "#aaaaaa", "#aa00aa", "#44aaff" ];
+        let team_names  = vec![ "team 1", "team 2", "team 3", "team 4", "team 5", "team 6", "team 7", "team 8" ];
+        let team_tokens  = vec![ "XXX1", "XXX2", "XXX3", "XXX4", "XXX5", "XXX6", "XXX7", "XXX8" ];
         game_state.id = 0;
         game_state.tick = 0;
         let map = &mut game_state.map;
         let teams = &mut game_state.teams;
-        for i in 0..8 {
-            let car = Car { x: 0, y: 0, state: State::STOPPED, health: 3, resources: 0 };
-            teams.push(Team { id: i+1, name: format!("team {}", i+1), score: 0, color: "#bbbbbb".to_string(), car: car, token: "XXXXXXXXXXX".to_string() });
+        for i in 0..nb_teams {
+            let car = Car {
+                x: 0,
+                y: 0,
+                health: 3,
+                resources: 0,
+                state: State::STOPPED,
+            };
+            teams.push(Team {
+                id: i+1,
+                name: team_names[i as usize].to_string(),
+                color: team_colors[i as usize].to_string(),
+                score: 0,
+                token: team_tokens[i as usize].to_string(),
+                car: car,
+            });
         }
-        for _ in 0..10 {
+        let level = vec![
+            "WWWWWWWWWWWWWWWWWWWW",
+            "W  9               W",
+            "W WWWWWWWWW WWWWWW W",
+            "W W              W W",
+            "W W      5       W W",
+            "W W             3W W",
+            "W W  WWWWWWWWWWWWW W",
+            "W W              1 W",
+            "W W                W",
+            "W WWWWWW      W    W",
+            "W             W    W",
+            "W      W      W    W",
+            "W      W  1        W",
+            "W      W           W",
+            "W      WWWWWW      W",
+            "W                  W",
+            "W                  W",
+            "W       WWWW       W",
+            "W                  W",
+            "W                  W",
+            "WBBBBBBBBBBBBBBBBBBW",
+            "WWWWWWWWWWWWWWWWWWWW",
+        ];
+        for level_row in level.iter() {
             let mut row: Vec<Cell> = Vec::new();
-            for _ in 0..10 {
-                let block = Block::WALL;
+            for c in level_row.chars() {
+                let block = match c {
+                    'W' => Block::WALL,
+                    _ => Block::OPEN
+                };
                 let mut items: Vec<Item> = Vec::new();
-                items.push(Item::BASE);
+                match c {
+                    'B' => items.push(Item::BASE),
+                     val @ '1' ... '9' => {
+                        let value = val.to_digit(10).unwrap();
+                        let cooldown = 10 + value*2;
+                        let producer = Producer { resource: Resource::GAS(value), cooldown: cooldown };
+                        items.push(Item::PRODUCER(producer));
+                    },
+                    _ => ()
+                };
                 let cell = Cell { block: block, items: items };
                 row.push(cell);
             }
@@ -441,7 +494,7 @@ fn init_logger(log_level: slog::Level) {
     let drain = slog::LevelFilter::new(drain, log_level).fuse();
     let drain = slog_async::Async::new(drain).build().fuse();
     let logger = slog::Logger::root(drain, o!());
-    LOGGER.lock().expect("Unable to get LOGGER lock in init_logger()").push(logger);
+    LOGGER.lock().expect("Unable to acquire LOGGER lock in init_logger()").push(logger);
 }
 
 fn main() {
@@ -451,12 +504,14 @@ fn main() {
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .arg(Arg::with_name("verbose")
             .short("v")
+            .long("verbose")
             .multiple(true)
             .help("verbosity level"))
         .arg(Arg::with_name("recreate")
              .short("r")
-             .takes_value(true)
+             .long("recreate")
              .value_name("FILE")
+             .takes_value(true)
              .help("generate an initial version of the game state or the config file, depending on the value of this parameter: 'game_state' or 'config'"))
         .get_matches();
     if let Err(_) = run(matches) {
