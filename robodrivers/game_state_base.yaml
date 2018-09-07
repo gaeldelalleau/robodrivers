@@ -1,0 +1,394 @@
+---
+id: 0
+map:
+  cells:
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+    - - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+      - block: WALL
+        items:
+          - BASE
+teams:
+  - id: 1
+    name: team 1
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 2
+    name: team 2
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 3
+    name: team 3
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 4
+    name: team 4
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 5
+    name: team 5
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 6
+    name: team 6
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 7
+    name: team 7
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+  - id: 8
+    name: team 8
+    color: "#bbbbbb"
+    score: 0
+    token: XXXXXXXXXXX
+    car:
+      x: 0
+      "y": 0
+      health: 3
+      resources: 0
+      state: STOPPED
+tick: 0
