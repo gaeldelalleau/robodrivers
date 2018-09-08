@@ -1,9 +1,10 @@
 extern crate serde_yaml;
+extern crate serde_json;
 
 use std::collections::HashMap;
 
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
 pub enum Resource {
     GAS(u32)
 }
@@ -40,7 +41,7 @@ pub struct Map {
     pub cells: Vec<Vec<Cell>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub enum Direction {
     NORTH,
     SOUTH,
@@ -88,16 +89,16 @@ pub struct GameState {
 }
 
 impl GameState {
-    pub fn new() -> GameState {
-        GameState::default()
-    }
-
     pub fn from_serialized(serialized: &str) -> GameState {
         serde_yaml::from_str::<GameState>(serialized).expect("Unable to deserialize game state")
     }
 
     pub fn to_serialized(self: &Self) -> String {
-        serde_yaml::to_string(self).expect("Unable to serialize game state")
+        serde_yaml::to_string(self).expect("Unable to serialize game state into YAML")
+    }
+
+    pub fn to_json(self: &Self) -> String {
+        serde_json::to_string(self).expect("Unable to serialize game state into JSON")
     }
 }
 

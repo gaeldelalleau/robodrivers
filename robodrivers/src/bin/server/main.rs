@@ -8,6 +8,7 @@ extern crate lazy_static;
 extern crate dirs;
 extern crate clap;
 extern crate ws;
+extern crate rand;
 
 #[macro_use]
 extern crate slog;
@@ -26,7 +27,6 @@ extern crate serde_yaml;
 use std::process;
 use std::thread;
 use std::time;
-use std::sync::Mutex;
 use clap::{Arg, ArgMatches, App};
 
 #[macro_use]
@@ -83,11 +83,11 @@ fn run(matches: ArgMatches) -> Result<(), String> {
     let mut game_engine = GameEngine::new();
     info!(logger!(), "Game initialized");
 
-    start_ws_server();
-    start_rpc_server(config);
+    let ws_broadcaster = start_ws_server();
+    let _rpc_reactor = start_rpc_server(config);
     info!(logger!(), "Ready to accept connections");
 
-    game_engine.start();
+    game_engine.start(ws_broadcaster);
     warn!(logger!(), "Game loop ended");
 
     Ok(())

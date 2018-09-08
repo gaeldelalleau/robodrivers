@@ -6,12 +6,14 @@ use std::time;
 use std::sync::Mutex;
 use std::collections::HashMap;
 
+use rand::prelude::*;
+use ws;
+
 use game_state::GameState;
 use game_state::Map;
 use game_state::Cell;
 use game_state::Item;
 use game_state::Resource;
-use game_state::Producer;
 use game_state::Block;
 use game_state::Direction;
 use game_state::Team;
@@ -56,9 +58,16 @@ pub enum Action {
     SUICIDE,
 }
 
+struct Coord {
+    x: i32,
+    y: i32,
+}
+
 pub struct GameEngine {
     game_id: u32,
     current_game_state_file: File,
+    bases: Vec<Coord>,
+    producers: Vec<Coord>,
 }
 
 impl GameEngine {
@@ -97,11 +106,23 @@ impl GameEngine {
         let mut game_state = GameState::from_serialized(&serialized);
         game_state.id = game_id;
 
-        // TODO: parse map to get list of cells holding: base items, producers items
+        let mut bases: Vec<Coord> = Vec::new();
+        let mut producers: Vec<Coord> = Vec::new();
+        for (y, row) in game_state.map.cells.iter().enumerate() {
+            for (x, cell) in row.iter().enumerate() {
+                for item in cell.items.iter() {
+                    match item {
+                        Item::BASE => bases.push(Coord { x: x as i32, y: y as i32 }),
+                        Item::PRODUCER(_producer) => producers.push(Coord { x: x as i32, y: y as i32 }),
+                        _ => (),
+                    }
+                }
+            }
+        }
 
         game_state_map.lock().expect("Unable to acquire game_state_map lock").insert(game_id, game_state);
 
-        GameEngine { game_id: game_id, current_game_state_file: file }
+        GameEngine { game_id: game_id, current_game_state_file: file, bases: bases, producers: producers }
     }
 
     fn save_game_state(self: &mut Self) -> () {
@@ -131,10 +152,20 @@ impl GameEngine {
         &self.cell_at(map, x, y).items
     }
 
-    fn spawn(self: &Self, map: &mut Map, car: &mut Car) {
-        // TODO XXX
-        self.restore_health(car);
+    fn spawn(self: &Self, cars: &mut HashMap<u32, Car>, team_id: u32) {
+        let bases = self.bases.iter().filter(|coord| {
+            for car in cars.values() {
+                if (car.x == coord.x) && (car.y == coord.y) { return false; }
+            }
+            true
+        }).collect::<Vec<&Coord>>();
+
+        let random_base = bases[thread_rng().gen_range(0, bases.len())];
+        let car = self.mut_get_car(cars, team_id);
+        car.x = random_base.x;
+        car.y = random_base.y;
         car.state = State::STOPPED;
+        self.restore_health(car);
     }
 
     fn drop_resources(self: &Self, map: &mut Map, car: &mut Car) {
@@ -153,12 +184,12 @@ impl GameEngine {
         car.health = car.max_health;
     }
 
-    fn kill(self: &Self, map: &mut Map, car: &mut Car) {
-        self.drop_resources(map, car);
-        self.spawn(map, car);
+    fn kill(self: &Self, map: &mut Map, cars: &mut HashMap<u32, Car>, team_id: u32) {
+        self.drop_resources(map, self.mut_get_car(cars, team_id));
     }
 
-    fn move_car(self: &Self, map: &mut Map, car: &mut Car, direction: &Direction) {
+    fn move_car(self: &Self, map: &mut Map, cars: &mut HashMap<u32, Car>, team_id: u32, direction: &Direction) {
+        let car = cars.get_mut(&team_id).unwrap();
         let mut x = car.x;
         let mut y = car.y;
         match direction {
@@ -168,10 +199,11 @@ impl GameEngine {
             Direction::WEST => x -= 1,
         }
         match self.cell_at(map, x, y).block {
-            Block::WALL => (),
+            Block::WALL => car.state = State::STOPPED,
             Block::OPEN => {
                 car.x = x;
                 car.y = y;
+                car.state = State::MOVING(*direction);
             },
         }
     }
@@ -202,51 +234,112 @@ impl GameEngine {
         }
     }
 
-    fn apply_action(self: &Self, game_state: &mut GameState, team_id: u32, action: &Action) {
-        let car = &mut game_state.cars.get_mut(&team_id).expect(&format!("Team {} has no car!", team_id));
+    fn mut_get_car<'a>(self: &Self, cars: &'a mut HashMap<u32, Car>, team_id: u32) -> &'a mut Car {
+        cars.get_mut(&team_id).expect(&format!("Team {} has no car!", team_id))
+    }
+
+    fn stop_car(self: &Self, cars: &mut HashMap<u32, Car>, team_id: u32) {
+        let car = self.mut_get_car(cars, team_id);
+        car.state = State::STOPPED;
+    }
+
+    fn apply_action(self: &Self, game_state: &mut GameState, team_id: u32, action: &Action) -> bool {
+        let cars = &mut game_state.cars;
         let team = &mut game_state.teams.get_mut(&team_id).expect(&format!("Team {} does not exists!", team_id));
         let map = &mut game_state.map;
 
         match action {
-            Action::STOP => car.state = State::STOPPED,
-            Action::MOVE(direction) => self.move_car(map, car, direction),
-            Action::SUICIDE => self.kill(map, car),
+            Action::STOP => self.stop_car(cars, team_id),
+            Action::MOVE(direction) => self.move_car(map, cars, team_id, direction),
+            Action::SUICIDE => {
+                self.kill(map, cars, team_id);
+                return true; // killed
+            },
         }
 
+        let car = self.mut_get_car(cars, team_id);
         self.collect(map, car);
-
         if self.items_at(map, car.x, car.y).contains(&Item::BASE) {
             self.at_base(car, team);
+        }
+        false // not killed
+    }
+
+    fn act(self: &Self, game_state: &mut GameState) {
+        let mut actions = actions!();
+        let team_ids = game_state.teams.keys().map(|k| *k).collect::<Vec<u32>>();
+        let mut killed_teams: Vec<u32> = Vec::new();
+
+        for team_id in team_ids {
+            let action = match actions.get(&team_id) {
+                Some(a) => a,
+                None => &Action::STOP,
+            };
+            let killed = self.apply_action(game_state, team_id, action);
+            if killed {
+                killed_teams.push(team_id);
+            }
+        }
+
+        for team_id in killed_teams {
+            self.spawn(&mut game_state.cars, team_id);
+        }
+
+        actions.clear();
+    }
+
+    fn produce(self: &mut Self, map: &mut Map) -> () {
+        for coord in &self.producers {
+            let mut resource: Option<Resource> = None;
+            let mut items = self.mut_items_at(map, coord.x, coord.y);
+            for item in items.iter_mut() {
+                match item {
+                    Item::PRODUCER(producer) => {
+                        if producer.on_cooldown {
+                            if producer.respawn_in == 0 {
+                                producer.on_cooldown = false;
+                                resource = Some(producer.resource);
+                            } else {
+                                producer.respawn_in -= 1;
+                            }
+                        }
+                    },
+                    _ => (),
+                }
+            }
+            match resource {
+                Some(r) => items.push(Item::RESOURCE(r)),
+                None => (),
+            }
         }
     }
 
     fn step(self: &mut Self) -> () {
         let mut game_state_guard = game_state_guard!();
         let game_state = game_state!(game_state_guard, self.game_id);
-        let mut actions = actions!();
 
-        // TODO: let producers produce!
-        // aka: for each producer on cooldown, reduce the respawn_in by 1, and drop resources on the
-        // cell if ok
-
-        let team_ids = game_state.teams.keys().map(|k| *k).collect::<Vec<u32>>();
-        for team_id in team_ids {
-            let action = match actions.get(&team_id) {
-                Some(a) => a,
-                None => &Action::STOP,
-            };
-            self.apply_action(game_state, team_id, action);
-        }
-        actions.clear();
+        self.produce(&mut game_state.map);
+        self.act(game_state);
 
         game_state.tick += 1;
     }
 
-    pub fn start(self: &mut Self) -> () {
+    pub fn start(self: &mut Self, ws_broadcaster: ws::Sender) -> () {
+        trace!(logger!(), "Initializing map objects");
+        {
+            let mut game_state_guard = game_state_guard!();
+            let game_state = game_state!(game_state_guard, &self.game_id);
+
+            for &team_id in game_state.teams.keys() {
+                self.spawn(&mut game_state.cars, team_id);
+            }
+        }
+
         trace!(logger!(), "Starting game loop");
         loop {
             thread::sleep(time::Duration::from_millis(200));
             self.step();
+            ws_broadcaster.send(game_state!(game_state_guard!(), &self.game_id).to_json()).expect("Broadcast to WebSocket failed");
             if game_state!(game_state_guard!(), &self.game_id).tick % 10 == 0 {
                 self.save_game_state();
             }

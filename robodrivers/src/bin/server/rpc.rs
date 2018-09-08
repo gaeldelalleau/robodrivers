@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::sync::Mutex;
 
 use tarpc::future::server;
 use tarpc::util::{FirstSocketAddr};
@@ -104,8 +103,9 @@ impl commands::FutureService for CommandsServer {
     }
 }
 
-pub fn start_rpc_server(config: Config) -> () {
+pub fn start_rpc_server(config: Config) -> reactor::Core {
     trace!(logger!(), "Starting RPC server");
+
     let reactor = reactor::Core::new().expect("Unable to create a new Reactor");
     let mut options = server::Options::default();
     options = options.max_payload_size(MAX_RPC_REQUEST_SIZE);
@@ -114,7 +114,9 @@ pub fn start_rpc_server(config: Config) -> () {
                                   options)
                           .expect("Unable to listen on socket for RPC server");
     reactor.handle().spawn(server);
+
     trace!(logger!(), "RPC server started");
+    reactor
 
     /*
     use futures::Future;

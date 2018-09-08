@@ -27,7 +27,9 @@ tokio-core = "0.1.17"
 serde = "1.0"
 serde_derive = "1.0"
 serde_yaml = "0.8.3"
+serde_json = "1.0.27"
 dirs = "1.0.3"
+rand = "0.5.5"
 
 [[bin]]
 name = "rd-server"

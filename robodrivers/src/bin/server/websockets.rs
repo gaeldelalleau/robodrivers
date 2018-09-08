@@ -1,6 +1,6 @@
 use std::thread;
 use ws;
-use ws::{listen, Handler, Sender, Message, CloseCode};
+use ws::{Handler, Sender, Message, CloseCode, Error};
 use logging::LOGGER;
 
 
@@ -17,17 +17,26 @@ impl Handler for Server {
     fn on_close(&mut self, code: CloseCode, reason: &str) {
         match code {
             CloseCode::Normal => debug!(logger!(), "The client is done with the connection."),
-            CloseCode::Away   => debug!(logger!(), "The client is leaving the site."),
+            CloseCode::Away => debug!(logger!(), "The client is leaving the site."),
+            CloseCode::Abnormal => info!(logger!(), "Closing handshake failed! Unable to obtain closing status from client."),
             _ => info!(logger!(), "The client encountered an error: {}", reason),
         }
     }
+
+    fn on_error(&mut self, err: Error) {
+        error!(logger!(), "The websocket server encountered an error: {:?}", err);
+    }
 }
 
-pub fn start_ws_server() -> () {
+pub fn start_ws_server() -> Sender {
     trace!(logger!(), "Starting WebSocket server");
-    let _ws_server = thread::Builder::new().name("ws_server".to_owned()).spawn(move || {
-        listen("0:3012", |out| Server { out: out } ).expect("Unable to listen on socket for Websocket server");
-    }).expect("Unable to spawn new thread for Websocket server");
-    trace!(logger!(), "WebSocket server started");
-}
 
+    let socket = ws::WebSocket::new(|out| Server { out: out }).expect("Unable to create new WebSocket instance");
+    let broadcaster = socket.broadcaster();
+    let _ws_server = thread::Builder::new().name("ws_server".to_owned()).spawn(move || {
+        socket.listen("0:3012").expect("Unable to listen on socket for Websocket server");
+    }).expect("Unable to spawn new thread for Websocket server");
+
+    trace!(logger!(), "WebSocket server started");
+    broadcaster
+}
