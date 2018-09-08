@@ -34,6 +34,13 @@ mod logging;
 use logging::init_logger;
 use logging::LOGGER;
 
+mod game_state;
+use game_state::recreate_game_state;
+
+#[macro_use]
+mod game_engine;
+use game_engine::GameEngine;
+
 mod config;
 use config::Config;
 use config::recreate_config;
@@ -43,12 +50,6 @@ use rpc::start_rpc_server;
 
 mod websockets;
 use websockets::start_ws_server;
-
-mod game_state;
-use game_state::recreate_game_state;
-
-mod game_engine;
-use game_engine::GameEngine;
 
 
 fn run(matches: ArgMatches) -> Result<(), String> {
@@ -83,7 +84,7 @@ fn run(matches: ArgMatches) -> Result<(), String> {
     info!(logger!(), "Game initialized");
 
     start_ws_server();
-    start_rpc_server(&config);
+    start_rpc_server(config);
     info!(logger!(), "Ready to accept connections");
 
     game_engine.start();

@@ -54,6 +54,8 @@ map:
               resource:
                 GAS: 9
               cooldown: 28
+              respawn_in: 0
+              on_cooldown: false
       - block: OPEN
         items: []
       - block: OPEN
@@ -190,6 +192,8 @@ map:
               resource:
                 GAS: 5
               cooldown: 20
+              respawn_in: 0
+              on_cooldown: false
       - block: OPEN
         items: []
       - block: OPEN
@@ -248,6 +252,8 @@ map:
               resource:
                 GAS: 3
               cooldown: 16
+              respawn_in: 0
+              on_cooldown: false
       - block: WALL
         items: []
       - block: OPEN
@@ -334,6 +340,8 @@ map:
               resource:
                 GAS: 1
               cooldown: 12
+              respawn_in: 0
+              on_cooldown: false
       - block: OPEN
         items: []
       - block: WALL
@@ -524,6 +532,8 @@ map:
               resource:
                 GAS: 1
               cooldown: 12
+              respawn_in: 0
+              on_cooldown: false
       - block: OPEN
         items: []
       - block: OPEN
@@ -921,92 +931,109 @@ map:
       - block: WALL
         items: []
 teams:
-  - id: 1
-    name: team 1
-    color: "#aa0000"
-    score: 0
-    token: XXX1
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 2
+  2:
     name: team 2
     color: "#00aa00"
     score: 0
     token: XXX2
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 3
+  3:
     name: team 3
     color: "#0000aa"
     score: 0
     token: XXX3
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 4
-    name: team 4
-    color: "#aaaa00"
-    score: 0
-    token: XXX4
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 5
-    name: team 5
-    color: "#00aaaa"
-    score: 0
-    token: XXX5
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 6
-    name: team 6
-    color: "#aaaaaa"
-    score: 0
-    token: XXX6
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 7
-    name: team 7
-    color: "#aa00aa"
-    score: 0
-    token: XXX7
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
-  - id: 8
+  8:
     name: team 8
     color: "#44aaff"
     score: 0
     token: XXX8
-    car:
-      x: 0
-      "y": 0
-      health: 3
-      resources: 0
-      state: STOPPED
+  5:
+    name: team 5
+    color: "#00aaaa"
+    score: 0
+    token: XXX5
+  7:
+    name: team 7
+    color: "#aa00aa"
+    score: 0
+    token: XXX7
+  1:
+    name: team 1
+    color: "#aa0000"
+    score: 0
+    token: XXX1
+  4:
+    name: team 4
+    color: "#aaaa00"
+    score: 0
+    token: XXX4
+  6:
+    name: team 6
+    color: "#aaaaaa"
+    score: 0
+    token: XXX6
+cars:
+  6:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 6
+  3:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 3
+  5:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 5
+  8:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 8
+  4:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 4
+  1:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 1
+  7:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 7
+  2:
+    x: 0
+    "y": 0
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 2
 tick: 0

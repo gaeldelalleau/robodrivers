@@ -24,13 +24,13 @@ lazy_static! {
     };
 }
 
-#[derive(Default, Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug, Clone)]
 pub struct Flag {
-    pub score: i32,
+    pub score: u32,
     pub flag: String,
 }
 
-#[derive(Default, Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug, Clone)]
 pub struct Config {
     pub flags: Vec<Flag>,
 }
