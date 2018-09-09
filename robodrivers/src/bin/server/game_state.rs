@@ -41,7 +41,7 @@ pub struct Map {
     pub cells: Vec<Vec<Cell>>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Direction {
     NORTH,
     SOUTH,
@@ -49,7 +49,7 @@ pub enum Direction {
     WEST,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum State {
     MOVING(Direction),
     STOPPED
@@ -60,10 +60,13 @@ impl Default for State {
 }
 
 
-#[derive(Default, Serialize, Deserialize, Debug)]
+#[derive(Default, Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Car {
     pub x: i32,
     pub y: i32,
+    pub next_x: i32,
+    pub next_y: i32,
+    pub collided: bool,
     pub health: i32,
     pub max_health: i32,
     pub resources: u32,
@@ -120,6 +123,9 @@ pub fn recreate_game_state() -> () {
             let car = Car {
                 x: 0,
                 y: 0,
+                next_x: 0,
+                next_y: 0,
+                collided: false,
                 health: max_health,
                 max_health: max_health,
                 resources: 0,

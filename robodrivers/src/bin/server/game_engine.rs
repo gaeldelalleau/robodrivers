@@ -5,6 +5,7 @@ use std::io::{Read, Write, Seek, SeekFrom};
 use std::time;
 use std::sync::Mutex;
 use std::collections::HashMap;
+use std::collections::HashSet;
 
 use rand::prelude::*;
 use ws;
@@ -58,6 +59,7 @@ pub enum Action {
     SUICIDE,
 }
 
+#[derive(PartialEq, Eq, Clone, Copy)]
 struct Coord {
     x: i32,
     y: i32,
@@ -188,7 +190,7 @@ impl GameEngine {
         self.drop_resources(map, self.mut_get_car(cars, team_id));
     }
 
-    fn move_car(self: &Self, map: &mut Map, cars: &mut HashMap<u32, Car>, team_id: u32, direction: &Direction) {
+    fn tentative_move_car(self: &Self, map: &mut Map, cars: &mut HashMap<u32, Car>, team_id: u32, direction: &Direction) {
         let car = cars.get_mut(&team_id).unwrap();
         let mut x = car.x;
         let mut y = car.y;
@@ -201,8 +203,8 @@ impl GameEngine {
         match self.cell_at(map, x, y).block {
             Block::WALL => car.state = State::STOPPED,
             Block::OPEN => {
-                car.x = x;
-                car.y = y;
+                car.next_x = x;
+                car.next_y = y;
                 car.state = State::MOVING(*direction);
             },
         }
@@ -234,6 +236,10 @@ impl GameEngine {
         }
     }
 
+    fn get_car<'a>(self: &Self, cars: &'a HashMap<u32, Car>, team_id: u32) -> &'a Car {
+        cars.get(&team_id).expect(&format!("Team {} has no car!", team_id))
+    }
+
     fn mut_get_car<'a>(self: &Self, cars: &'a mut HashMap<u32, Car>, team_id: u32) -> &'a mut Car {
         cars.get_mut(&team_id).expect(&format!("Team {} has no car!", team_id))
     }
@@ -243,45 +249,176 @@ impl GameEngine {
         car.state = State::STOPPED;
     }
 
+    fn mark_collision(self: &Self, cars: &mut HashMap<u32, Car>, team_id: u32) -> bool {
+        let car = self.mut_get_car(cars, team_id);
+        car.collided = true;
+        if car.health > 0 {
+            car.health -= 1;
+            if car.health == 0 {
+                return true; // killed
+            }
+        }
+        false // still alive
+    }
+
+    fn opposite_directions(self: &Self, direction: &Direction, other_direction: &Direction) -> bool {
+        match direction {
+            Direction::NORTH => match other_direction {
+                Direction::SOUTH => true,
+                _ => false,
+            },
+            Direction::SOUTH => match other_direction {
+                Direction::NORTH => true,
+                _ => false,
+            },
+            Direction::EAST => match other_direction {
+                Direction::WEST => true,
+                _ => false,
+            },
+            Direction::WEST => match other_direction {
+                Direction::EAST => true,
+                _ => false,
+            },
+        }
+    }
+
+    fn solver(self: &Self, cars: &mut HashMap<u32, Car>, killed_teams: &mut HashSet<u32>) {
+
+        for car in &mut cars.values_mut() {
+            car.collided = false;
+        }
+
+        let mut free_set: HashSet<u32> = HashSet::new();
+        for &id in cars.keys().filter(|id| !killed_teams.contains(id)) {
+            free_set.insert(id);
+        }
+
+        let all_cars = cars.clone();
+
+        while free_set.len() > 0 {
+            let mut solved: Vec<u32> = Vec::new();
+            for car_id in &free_set {
+                let car = self.get_car(cars, *car_id).clone();
+                let direction: Direction;
+                let mut free_to_go: bool = true;
+
+                match car.state {
+                    State::MOVING(d) => direction = d,
+                    _ => {
+                        solved.push(*car_id);
+                        continue;
+                    },
+                }
+                let next_coord = Coord { x: car.next_x, y: car.next_y };
+
+                for (other_id, other_car) in all_cars.iter().filter(|t| t.0 != car_id) {
+                    let mut collisions_coords: Vec<Coord> = Vec::new();
+                    let mut potential_collisions_coords: Vec<Coord> = Vec::new();
+                    let other_coord = Coord { x: other_car.x, y: other_car.y };
+                    let other_direction: Direction;
+                    let mut collision: bool = false;
+
+                    match other_car.state {
+                        State::MOVING(d) => {
+                            other_direction = d;
+                            collisions_coords.push(Coord { x: other_car.next_x, y: other_car.next_y });
+                            if self.get_car(cars, *other_id).collided {
+                                collisions_coords.push(other_coord);
+                            } else if free_set.contains(other_id) {  // aka "if this car is still unresolved"
+                                potential_collisions_coords.push(other_coord);
+                            }
+                            if self.opposite_directions(&direction, &other_direction) && (next_coord == other_coord) {
+                                collision = true;
+                            }
+                        },
+                        State::STOPPED => {
+                            collisions_coords.push(other_coord);
+                        },
+                    }
+
+                    if potential_collisions_coords.contains(&next_coord) {
+                        free_to_go = false;
+                    }
+                    if collisions_coords.contains(&next_coord) {
+                        collision = true;
+                    }
+
+                    if collision {
+                        free_to_go = false;
+                        for &id in vec!(car_id, other_id) {
+                            if !self.get_car(cars, id).collided {
+                                if self.mark_collision(cars, id) {
+                                    killed_teams.insert(id);
+                                }
+                                solved.push(id);
+                            }
+                        }
+                    }
+                }
+                if free_to_go {
+                    let car = self.mut_get_car(cars, *car_id);
+                    car.x = car.next_x;
+                    car.y = car.next_y;
+                    solved.push(*car_id);
+                }
+            }
+            for id in &solved {
+                free_set.remove(id);
+            }
+        }
+    }
+
     fn apply_action(self: &Self, game_state: &mut GameState, team_id: u32, action: &Action) -> bool {
         let cars = &mut game_state.cars;
-        let team = &mut game_state.teams.get_mut(&team_id).expect(&format!("Team {} does not exists!", team_id));
         let map = &mut game_state.map;
 
         match action {
             Action::STOP => self.stop_car(cars, team_id),
-            Action::MOVE(direction) => self.move_car(map, cars, team_id, direction),
+            Action::MOVE(direction) => self.tentative_move_car(map, cars, team_id, direction),
             Action::SUICIDE => {
-                self.kill(map, cars, team_id);
+                self.stop_car(cars, team_id);
                 return true; // killed
             },
         }
+        false // not killed
+    }
+
+    fn post_events(self: &Self, game_state: &mut GameState, team_id: u32) {
+        let cars = &mut game_state.cars;
+        let team = &mut game_state.teams.get_mut(&team_id).expect(&format!("Team {} does not exists!", team_id));
+        let map = &mut game_state.map;
 
         let car = self.mut_get_car(cars, team_id);
         self.collect(map, car);
         if self.items_at(map, car.x, car.y).contains(&Item::BASE) {
             self.at_base(car, team);
-        }
-        false // not killed
+        };
     }
 
     fn act(self: &Self, game_state: &mut GameState) {
         let mut actions = actions!();
         let team_ids = game_state.teams.keys().map(|k| *k).collect::<Vec<u32>>();
-        let mut killed_teams: Vec<u32> = Vec::new();
+        let mut killed_teams: HashSet<u32> = HashSet::new();
 
-        for team_id in team_ids {
+        for team_id in &team_ids {
             let action = match actions.get(&team_id) {
                 Some(a) => a,
                 None => &Action::STOP,
             };
-            let killed = self.apply_action(game_state, team_id, action);
+            let killed = self.apply_action(game_state, *team_id, action);
             if killed {
-                killed_teams.push(team_id);
+                killed_teams.insert(*team_id);
             }
         }
 
+        self.solver(&mut game_state.cars, &mut killed_teams);
+
+        for team_id in team_ids.iter().filter(|id| !killed_teams.contains(id)) {
+            self.post_events(game_state, *team_id);
+        }
+
         for team_id in killed_teams {
+            self.kill(&mut game_state.map, &mut game_state.cars, team_id);
             self.spawn(&mut game_state.cars, team_id);
         }
 
