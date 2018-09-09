@@ -59,6 +59,16 @@ pub enum Action {
     SUICIDE,
 }
 
+impl Action {
+    fn random_action() -> Action {
+        match thread_rng().gen_range(0, 100) {
+            0...3 => Action::SUICIDE,
+            3...10 => Action::STOP,
+            _ => Action::MOVE(Direction::random_direction()) ,
+        }
+    }
+}
+
 #[derive(PartialEq, Eq, Clone, Copy)]
 struct Coord {
     x: i32,
@@ -70,6 +80,7 @@ pub struct GameEngine {
     current_game_state_file: File,
     bases: Vec<Coord>,
     producers: Vec<Coord>,
+    simulate: bool,
 }
 
 impl GameEngine {
@@ -99,7 +110,7 @@ impl GameEngine {
         }
     }
 
-    pub fn new() -> GameEngine {
+    pub fn new(simulate: bool) -> GameEngine {
         let game_id = 0;
         let mut file = GameEngine::get_game_state_file(game_id);
 
@@ -124,7 +135,7 @@ impl GameEngine {
 
         game_state_map.lock().expect("Unable to acquire game_state_map lock").insert(game_id, game_state);
 
-        GameEngine { game_id: game_id, current_game_state_file: file, bases: bases, producers: producers }
+        GameEngine { game_id: game_id, current_game_state_file: file, bases: bases, producers: producers, simulate: simulate }
     }
 
     fn save_game_state(self: &mut Self) -> () {
@@ -451,11 +462,21 @@ impl GameEngine {
         }
     }
 
+    fn simulation(self: &Self, game_state: &GameState) {
+        let mut actions = actions!();
+        for team_id in game_state.teams.keys() {
+            actions.insert(*team_id, Action::random_action());
+        }
+    }
+
     fn step(self: &mut Self) -> () {
         let mut game_state_guard = game_state_guard!();
         let game_state = game_state!(game_state_guard, self.game_id);
 
         self.produce(&mut game_state.map);
+        if self.simulate {
+            self.simulation(game_state);
+        }
         self.act(game_state);
 
         game_state.tick += 1;

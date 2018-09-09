@@ -58,6 +58,8 @@ fn run(matches: ArgMatches) -> Result<(), String> {
         1 => slog::Level::Debug,
         2 | _ => slog::Level::Trace,
     };
+    let simulate = matches.is_present("simulate");
+
     init_logger(log_level);
     trace!(logger!(), "Logger initialized");
 
@@ -80,7 +82,7 @@ fn run(matches: ArgMatches) -> Result<(), String> {
     let config = Config::new();
     trace!(logger!(), "Configuration loaded");
 
-    let mut game_engine = GameEngine::new();
+    let mut game_engine = GameEngine::new(simulate);
     info!(logger!(), "Game initialized");
 
     let ws_broadcaster = start_ws_server();
@@ -103,6 +105,10 @@ fn main() {
             .long("verbose")
             .multiple(true)
             .help("verbosity level"))
+        .arg(Arg::with_name("simulate")
+            .short("s")
+            .long("simulate")
+            .help("simulate team actions"))
         .arg(Arg::with_name("recreate")
              .short("r")
              .long("recreate")

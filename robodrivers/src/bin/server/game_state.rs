@@ -1,6 +1,7 @@
 extern crate serde_yaml;
 extern crate serde_json;
 
+use rand::prelude::*;
 use std::collections::HashMap;
 
 
@@ -47,6 +48,17 @@ pub enum Direction {
     SOUTH,
     EAST,
     WEST,
+}
+
+impl Direction {
+    pub fn random_direction() -> Direction {
+        match thread_rng().gen_range(0, 4) as u32 {
+            0 => Direction::NORTH,
+            1 => Direction::SOUTH,
+            2 => Direction::EAST,
+            _ => Direction::WEST,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
