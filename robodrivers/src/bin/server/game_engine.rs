@@ -313,18 +313,27 @@ impl GameEngine {
 
         while free_set.len() > 0 {
             let mut solved: Vec<u32> = Vec::new();
+            let mut last_car_id: u32 = 0;
+
             for car_id in &free_set {
+                if solved.contains(car_id) {
+                        continue;
+                }
                 let car = self.get_car(cars, *car_id).clone();
                 let direction: Direction;
                 let mut free_to_go: bool = true;
 
                 match car.state {
-                    State::MOVING(d) => direction = d,
+                    State::MOVING(d) => {
+                        direction = d;
+                        last_car_id = *car_id;
+                    },
                     _ => {
                         solved.push(*car_id);
                         continue;
                     },
                 }
+
                 let next_coord = Coord { x: car.next_x, y: car.next_y };
 
                 for (other_id, other_car) in all_cars.iter().filter(|t| t.0 != car_id) {
@@ -340,11 +349,12 @@ impl GameEngine {
                             collisions_coords.push(Coord { x: other_car.next_x, y: other_car.next_y });
                             if self.get_car(cars, *other_id).collided {
                                 collisions_coords.push(other_coord);
-                            } else if free_set.contains(other_id) {  // aka "if this car is still unresolved"
-                                potential_collisions_coords.push(other_coord);
-                            }
-                            if self.opposite_directions(&direction, &other_direction) && (next_coord == other_coord) {
-                                collision = true;
+                            } else if free_set.contains(other_id) && !solved.contains(other_id) {  // aka "if this car is still unresolved"
+                                if self.opposite_directions(&direction, &other_direction) && (next_coord == other_coord) {
+                                    collision = true;
+                                } else {
+                                    potential_collisions_coords.push(other_coord);
+                                }
                             }
                         },
                         State::STOPPED => {
@@ -377,6 +387,13 @@ impl GameEngine {
                     car.y = car.next_y;
                     solved.push(*car_id);
                 }
+            }
+            // break cyclic dependencies
+            if solved.len() == 0 {
+                let car = self.mut_get_car(cars, last_car_id);
+                car.x = car.next_x;
+                car.y = car.next_y;
+                solved.push(last_car_id);
             }
             for id in &solved {
                 free_set.remove(id);
@@ -500,7 +517,7 @@ impl GameEngine {
 
         trace!(logger!(), "Starting game loop");
         loop {
-            thread::sleep(time::Duration::from_millis(10));
+            thread::sleep(time::Duration::from_millis(100));
             self.step();
             ws_broadcaster.send(game_state!(game_state_guard!(), &self.game_id).to_json()).expect("Broadcast to WebSocket failed");
             if game_state!(game_state_guard!(), &self.game_id).tick % 10 == 0 {
