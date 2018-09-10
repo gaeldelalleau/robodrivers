@@ -61,9 +61,9 @@ pub enum Action {
 
 impl Action {
     fn random_action() -> Action {
-        match thread_rng().gen_range(0, 100) {
-            0...3 => Action::SUICIDE,
-            3...10 => Action::STOP,
+        match thread_rng().gen_range(0, 1000) {
+            0...1 => Action::SUICIDE,
+            1...100 => Action::STOP,
             _ => Action::MOVE(Direction::random_direction()) ,
         }
     }
@@ -199,6 +199,10 @@ impl GameEngine {
 
     fn kill(self: &Self, map: &mut Map, cars: &mut HashMap<u32, Car>, team_id: u32) {
         self.drop_resources(map, self.mut_get_car(cars, team_id));
+        let car = self.mut_get_car(cars, team_id);
+        car.killed = true;
+        car.next_x = car.x;  // could be used by the client to know where the car was killed
+        car.next_y = car.y;
     }
 
     fn tentative_move_car(self: &Self, map: &mut Map, cars: &mut HashMap<u32, Car>, team_id: u32, direction: &Direction) {
@@ -297,6 +301,7 @@ impl GameEngine {
 
         for car in &mut cars.values_mut() {
             car.collided = false;
+            car.killed = false;
         }
 
         let mut free_set: HashSet<u32> = HashSet::new();
@@ -495,7 +500,7 @@ impl GameEngine {
 
         trace!(logger!(), "Starting game loop");
         loop {
-            thread::sleep(time::Duration::from_millis(200));
+            thread::sleep(time::Duration::from_millis(10));
             self.step();
             ws_broadcaster.send(game_state!(game_state_guard!(), &self.game_id).to_json()).expect("Broadcast to WebSocket failed");
             if game_state!(game_state_guard!(), &self.game_id).tick % 10 == 0 {

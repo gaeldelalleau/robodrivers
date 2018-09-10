@@ -936,16 +936,16 @@ teams:
     color: "#00aa00"
     score: 0
     token: XXX2
-  6:
-    name: team 6
-    color: "#aaaaaa"
+  8:
+    name: team 8
+    color: "#44aaff"
     score: 0
-    token: XXX6
-  7:
-    name: team 7
-    color: "#aa00aa"
+    token: XXX8
+  1:
+    name: team 1
+    color: "#aa0000"
     score: 0
-    token: XXX7
+    token: XXX1
   3:
     name: team 3
     color: "#0000aa"
@@ -956,50 +956,29 @@ teams:
     color: "#aaaa00"
     score: 0
     token: XXX4
-  1:
-    name: team 1
-    color: "#aa0000"
-    score: 0
-    token: XXX1
-  8:
-    name: team 8
-    color: "#44aaff"
-    score: 0
-    token: XXX8
   5:
     name: team 5
     color: "#00aaaa"
     score: 0
     token: XXX5
-cars:
+  6:
+    name: team 6
+    color: "#aaaaaa"
+    score: 0
+    token: XXX6
   7:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 7
-  8:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 8
+    name: team 7
+    color: "#aa00aa"
+    score: 0
+    token: XXX7
+cars:
   3:
     x: 0
     "y": 0
     next_x: 0
     next_y: 0
     collided: false
+    killed: false
     health: 3
     max_health: 3
     resources: 0
@@ -1011,53 +990,82 @@ cars:
     next_x: 0
     next_y: 0
     collided: false
+    killed: false
     health: 3
     max_health: 3
     resources: 0
     state: STOPPED
     team_id: 2
-  6:
+  8:
     x: 0
     "y": 0
     next_x: 0
     next_y: 0
     collided: false
+    killed: false
     health: 3
     max_health: 3
     resources: 0
     state: STOPPED
-    team_id: 6
+    team_id: 8
   1:
     x: 0
     "y": 0
     next_x: 0
     next_y: 0
     collided: false
+    killed: false
     health: 3
     max_health: 3
     resources: 0
     state: STOPPED
     team_id: 1
-  4:
+  7:
     x: 0
     "y": 0
     next_x: 0
     next_y: 0
     collided: false
+    killed: false
     health: 3
     max_health: 3
     resources: 0
     state: STOPPED
-    team_id: 4
+    team_id: 7
   5:
     x: 0
     "y": 0
     next_x: 0
     next_y: 0
     collided: false
+    killed: false
     health: 3
     max_health: 3
     resources: 0
     state: STOPPED
     team_id: 5
+  4:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 4
+  6:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 6
 tick: 0
