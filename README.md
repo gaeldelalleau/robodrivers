@@ -42,7 +42,7 @@ If you want to run the web server in the background instead, you can use the "-d
 
 Rust server:
 ```
-docker run --rm --network=robonet -p 3011:3011 -p 3012:3012 -it roboserver
+docker run --rm --network=robonet -p 3011:3011 -p 3012:3012 -it roboserver -v
 ```
 
 The local IP address of your server container can now be seen in the output of:
