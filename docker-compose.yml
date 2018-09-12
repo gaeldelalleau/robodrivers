@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    build: ./web
+    ports:
+     - "8000:8000"
+#    volumes:
+#     - .:/code
+  server:
+    build: ./server
+    restart: always
+    ports:
+      - "3011:3011"
+      - "3012:3012"
+  client:
+    build: ./client
