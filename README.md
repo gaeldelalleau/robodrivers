@@ -61,7 +61,13 @@ Important: use the --host option on the client to tell it to connect to the corr
 
 ## Getting started
 
-### Running the client
+### Visualize the game 
+
+Once you get the roboweb and roboserver running, you can visualize the agents, the map and the scores in your browser.
+
+Point your browser to http://127.0.0.1:8000
+
+### Running the client to control your autonomous agent
 
 Run the client, either locally with your own Python and Rust installation:
 ```
@@ -73,7 +79,7 @@ or through docker:
 docker run --rm --network=robonet -it roboclient --help
 ```
 
-To connect to the server and run actions with a default policy, do:
+To connect to the server and run actions with a default policy for your agent, do:
 ```
 docker run --rm --network=robonet -it roboclient --host <server ip> run 
 ```
