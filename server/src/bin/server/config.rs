@@ -15,6 +15,17 @@ pub const SERIALIZED_FILES_EXTENSION: &str = "yaml";
 
 lazy_static! {
     pub static ref WORKING_DIRECTORY: PathBuf = {
+        match env::current_dir() {
+            Ok(cur_dir) => {
+                let mut config_file = cur_dir.clone();
+                config_file.push(CONFIG_FILENAME);
+                config_file.set_extension(SERIALIZED_FILES_EXTENSION);
+                if config_file.exists() {
+                    return cur_dir;
+                }
+            },
+            Err(_) => (),
+        }
         match env::current_exe() {
             Ok(exe_path) => exe_path.parent().expect("Unable to get parent directory of current executable path").to_path_buf(),
             Err(_) => match dirs::home_dir() {

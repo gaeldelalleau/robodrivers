@@ -16,7 +16,6 @@ extern crate slog_term;
 extern crate slog_async;
 
 extern crate futures;
-#[macro_use]
 extern crate tarpc;
 extern crate tokio_core;
 
