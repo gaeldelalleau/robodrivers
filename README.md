@@ -76,12 +76,12 @@ cd client
 ```
 or through docker:
 ```
-docker run --rm --network=robonet -it roboclient --help
+docker run --rm -it roboclient --help
 ```
 
 To connect to the server and run actions with a default policy for your agent, do:
 ```
-docker run --rm --network=robonet -it roboclient --host <server ip> run 
+docker run --rm [--network=robonet] -it roboclient --host <server ip> run
 ```
 
 #### Building the Rust dependency manually for the client (NOT NEEDED if you use Docker) 
@@ -117,7 +117,7 @@ The "train" command is currently unimplemented in the client. That's your job to
 If you manage to reach certain score thresholds, flags will be unlocked.
 You can see the flags you unlocked with:
 ```
-docker run --rm --network=robonet -it roboclient --host <server ip> flags 
+docker run --rm -it roboclient --host <server ip> flags
 ```
 
 Make sure to check them periodically, as the score thresholds may be updated during the day!
