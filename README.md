@@ -14,11 +14,23 @@ docker-compose up
 
 ### With Docker
 
+Web interface:
 ```
 docker build . -t web
 docker run -p 8000:8000 web
 ```
 
+Rust server:
+```
+docker build . -t server
+docker run -p 3011:3012 server
+```
+
+Python client:
+```
+docker build . -t client
+docker run client
+```
 
 ## Getting started
 
