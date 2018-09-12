@@ -1,6 +1,6 @@
 # robodrivers
 
-Autonomous agents roaming in the city's sewers to collect resources.
+Autonomous agents roaming in the city's underground tunnels to collect resources.
 
 Each team controls one agent.
 
