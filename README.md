@@ -73,7 +73,6 @@ or through docker:
 docker run --rm --network=robonet -it roboclient --help
 ```
 
-```
 To connect to the server and run actions with a default policy, do:
 ```
 docker run --rm --network=robonet -it roboclient --host <server ip> run 
