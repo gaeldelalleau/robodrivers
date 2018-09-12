@@ -167,9 +167,11 @@ impl GameEngine {
     }
 
     fn drop_resources(self: &Self, map: &mut Map, car: &mut Car) {
-        let items = self.mut_items_at(map, car.x, car.y);
-        items.push(Item::RESOURCE(Resource::GAS(car.resources)));
-        car.resources = 0;
+        if car.resources > 0 {
+            let items = self.mut_items_at(map, car.x, car.y);
+            items.push(Item::RESOURCE(Resource::GAS(car.resources)));
+            car.resources = 0;
+        }
     }
 
     fn at_base(self: &Self, car: &mut Car, team: &mut Team) {

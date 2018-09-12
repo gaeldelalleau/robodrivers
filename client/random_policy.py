@@ -1,5 +1,10 @@
 from policy import Policy
 from actions import Action
+import random
+
+from actions import ActionType
+from actions import Direction
+
 
 class RandomPolicy(Policy):
     """
@@ -13,5 +18,14 @@ class RandomPolicy(Policy):
         """
         Chose an action at random, with a bias towards moving
         """
-        raise "XXX TODO"
-        # return Action()
+        action_types = [item for item in ActionType]
+        directions = [item for item in Direction]
+        action_type = random.choices(action_types, weights=[10, 100, 1])[0]
+
+        if action_type == ActionType.MOVE:
+            direction = random.choices(directions)[0]
+        else:
+            direction = None
+
+        action = Action(action_type, direction)
+        return action

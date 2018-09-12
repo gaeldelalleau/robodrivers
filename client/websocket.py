@@ -5,45 +5,54 @@ from threading import Thread
 # import sys
 
 import aiohttp
+from aiohttp import ClientConnectorError
 from queue import Empty
 
 
 def start_client(loop, url, queue):
-    # send request
-    ws = yield from aiohttp.ClientSession().ws_connect(url, autoclose=False, autoping=False, origin='Roboclient')
+    while True:
+        session = aiohttp.ClientSession()
+        try:
+            ws = yield from session.ws_connect(url, autoclose=False, autoping=False, origin='Roboclient')
+        except ClientConnectorError:
+            session.close()
+            print("Error: lost Websocket connection, or unable to connect to it in the first place, will try again")
+            yield from asyncio.sleep(2)
+            continue
+        print('- WebSocket connection successful -')
 
-    @asyncio.coroutine
-    def dispatch():
-        while True:
-            msg = yield from ws.receive()
-            if msg.type == aiohttp.WSMsgType.TEXT:
-                json_state = msg.data.strip()
-                while not queue.empty():
-                    try:
-                        queue.get_nowait()
-                    except Empty:
-                        pass
-                queue.put(json_state)
-                # print('Text: ', msg.data.strip())
-            elif msg.type == aiohttp.WSMsgType.BINARY:
-                pass
-                # print('Binary: ', msg.data)
-            elif msg.type == aiohttp.WSMsgType.PING:
-                ws.pong()
-            elif msg.type == aiohttp.WSMsgType.PONG:
-                pass
-                # print('Pong received')
-            else:
-                if msg.type == aiohttp.WSMsgType.CLOSE:
-                    yield from ws.close()
-                elif msg.type == aiohttp.WSMsgType.ERROR:
-                    print('Error during websocket receive %s' % ws.exception())
-                elif msg.type == aiohttp.WSMsgType.CLOSED:
+        @asyncio.coroutine
+        def dispatch():
+            while True:
+                msg = yield from ws.receive()
+                if msg.type == aiohttp.WSMsgType.TEXT:
+                    json_state = msg.data.strip()
+                    while not queue.empty():
+                        try:
+                            queue.get_nowait()
+                        except Empty:
+                            pass
+                    queue.put(json_state)
+                    # print('Text: ', msg.data.strip())
+                elif msg.type == aiohttp.WSMsgType.BINARY:
                     pass
-                print('WebSocket connection terminated!')
-                break
+                    # print('Binary: ', msg.data)
+                elif msg.type == aiohttp.WSMsgType.PING:
+                    ws.pong()
+                elif msg.type == aiohttp.WSMsgType.PONG:
+                    pass
+                else:
+                    if msg.type == aiohttp.WSMsgType.CLOSE:
+                        print("WebSocket connection closed!")
+                        yield from ws.close()
+                    elif msg.type == aiohttp.WSMsgType.ERROR:
+                        print('Error during websocket receive %s' % ws.exception())
+                    elif msg.type == aiohttp.WSMsgType.CLOSED:
+                        pass
+                    print('WebSocket connection terminated!')
+                    break
 
-    yield from dispatch()
+        yield from dispatch()
 
 
 def start_loop(loop, url, queue):

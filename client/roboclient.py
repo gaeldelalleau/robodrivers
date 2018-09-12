@@ -2,6 +2,7 @@
 """Python client for Robodrivers AI Challenge @ICON 2018"""
 import argparse
 import json
+import random
 from queue import Queue
 
 import websocket
@@ -32,7 +33,7 @@ def parse_args():
                         help='RPC port number (used to send the agent\'s actions to the server)')
     parser.add_argument('--ws-port', action="store", dest='ws_port', default=3012, type=int,
                         help='WebSocket port number (used to retrieve the game state at each time step)')
-    parser.add_argument('--lib_dir', action="store", dest='lib_dir', default='../target/debug',
+    parser.add_argument('--lib_dir', action="store", dest='lib_dir', default='../server/target/debug',
                         help='Directory holding the Rust RPC shared library used to connect with the server')
     parser.add_argument('--team', action="store", dest='team_id', default=1, type=int,
                         help='Your team identifier')
@@ -81,8 +82,8 @@ def run(args):
                 print('Warning: it seems that we skipped some game steps')
         tick = new_tick
 
-        print('tick: ' + str(tick))
-        print('game state["teams"]: ' + repr(game_state['teams']))
+        # print('tick: ' + str(tick))
+        # print('game state["teams"]: ' + repr(game_state['teams']))
 
         observation = observe(game_state)
         action = agent.forward(observation)
@@ -101,6 +102,8 @@ def train(args):
 def main():
     global rust_bindings
     global rpc
+
+    random.seed()  # WARNING: seed based on time. Not crypto secure.
 
     args = parse_args()
 
