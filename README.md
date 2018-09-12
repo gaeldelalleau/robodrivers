@@ -61,12 +61,61 @@ Important: use the --host option on the client to tell it to connect to the corr
 
 ## Getting started
 
+### Running the client
 
-Run the client, either locally with your own Python and Rust installation, or through Docker:
+Run the client, either locally with your own Python and Rust installation:
 ```
-docker run roboclient ./roboclient.py --help
+cd client
+./roboclient.py --help
+```
+or through docker:
+```
+docker run --rm --network=robonet -it roboclient --help
 ```
 
+```
+To connect to the server and run actions with a default policy, do:
+```
+docker run --rm --network=robonet -it roboclient --host <server ip> run 
+```
 
-## Game rules
+#### Building the Rust dependency manually for the client (NOT NEEDED if you use Docker) 
 
+If you want to run the client locally without using docker, you need to have compiled a dependency first: a Rust shared library.
+First install the Rust toolchain on your system, and switch to the nightly toolchain.
+Depending on your system, details may vary. On Unix it should be:
+```
+curl https://sh.rustup.rs -sSf | sh
+[...]
+rustup update nightly
+rustup default nightly
+``` 
+Then build the library:
+```
+cd server
+cargo build
+```
+
+## What's next?
+
+### Run your autonomous vehicule better than the other teams
+
+Now try to update the client's policy scripts to get a better score!
+
+Have an idea for better competitive heuristics or path finding? Reinforcement learning? Genetic algorithms maybe?
+Just go for it!
+
+The "train" command is currently unimplemented in the client. That's your job too :)
+
+### How to validate the flags
+
+If you manage to reach certain score thresholds, flags will be unlocked.
+You can see the flags you unlocked with:
+```
+docker run --rm --network=robonet -it roboclient --host <server ip> flags 
+```
+
+Make sure to check them periodically, as the score thresholds may be updated during the day!
+
+In order to get the points for your team, validate the flags by manually entering them in the CTFd interface.
+ 
