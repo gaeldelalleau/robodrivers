@@ -1,8 +1,8 @@
 extern crate serde_yaml;
 extern crate serde_json;
 
-use rand::prelude::*;
 use std::collections::HashMap;
+use robodrivers::Direction;
 
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
@@ -43,25 +43,6 @@ pub struct Map {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum Direction {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
-}
-
-impl Direction {
-    pub fn random_direction() -> Direction {
-        match thread_rng().gen_range(0, 4) as u32 {
-            0 => Direction::NORTH,
-            1 => Direction::SOUTH,
-            2 => Direction::EAST,
-            _ => Direction::WEST,
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum State {
     MOVING(Direction),
     STOPPED
@@ -92,7 +73,6 @@ pub struct Team {
     pub name: String,
     pub color: String,
     pub score: u32,
-    pub token: String,
 }
 
 #[derive(Default, Serialize, Deserialize, Debug)]
@@ -125,7 +105,6 @@ pub fn recreate_game_state() -> () {
         let max_health = 3;
         let team_colors = vec![ "#aa0000", "#00aa00", "#0000aa", "#aaaa00", "#00aaaa", "#aaaaaa", "#aa00aa", "#44aaff" ];
         let team_names  = vec![ "team 1", "team 2", "team 3", "team 4", "team 5", "team 6", "team 7", "team 8" ];
-        let team_tokens  = vec![ "XXX1", "XXX2", "XXX3", "XXX4", "XXX5", "XXX6", "XXX7", "XXX8" ];
         game_state.id = 0;
         game_state.tick = 0;
         let map = &mut game_state.map;
@@ -150,33 +129,30 @@ pub fn recreate_game_state() -> () {
                 name: team_names[i as usize].to_string(),
                 color: team_colors[i as usize].to_string(),
                 score: 0,
-                token: team_tokens[i as usize].to_string(),
             });
             cars.insert(team_id, car);
         }
         let level = vec![
-            "WWWWWWWWWWWWWWWWWWWW",
-            "W  9               W",
-            "W WWWWWWWWW WWWWWW W",
-            "W W              W W",
-            "W W      5       W W",
-            "W W             3W W",
-            "W W  WWWWWWWWWWWWW W",
-            "W W              1 W",
-            "W W                W",
-            "W WWWWWW      W    W",
-            "W             W    W",
-            "W      W      W    W",
-            "W      W  1        W",
-            "W      W           W",
-            "W      WWWWWW      W",
-            "W                  W",
-            "W                  W",
-            "W       WWWW       W",
-            "W                  W",
-            "W                  W",
-            "WBBBBBBBBBBBBBBBBBBW",
-            "WWWWWWWWWWWWWWWWWWWW",
+            "WWWWWWWWWWWWWWWWWWWWWWWW",
+            "W  9                   W",
+            "W WWWWWWWWW WWWWWW W   W",
+            "W W                W W W",
+            "W W      5       W W W W",
+            "W W             3W W W W",
+            "W W  WWWWWWWWWWWWW W W W",
+            "W W WWW          1 W   W",
+            "W W                W   W",
+            "W WWWWWW      W    W393W",
+            "W             W    WWWWW",
+            "W      W      W    W    ",
+            "W      W  1        W    ",
+            "W      WWWWWW      W    ",
+            "W                  W    ",
+            "W       WWWW       W    ",
+            "W                  W    ",
+            "WWWW            WWWW    ",
+            "   WBBBBBBBBBBBBW       ",
+            "   WWWWWWWWWWWWWW       ",
         ];
         for level_row in level.iter() {
             let mut row: Vec<Cell> = Vec::new();

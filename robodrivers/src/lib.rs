@@ -1,13 +1,24 @@
 #![crate_type="lib"]
 
-pub fn some_lib_func() {}
+#![feature(plugin)]
+#![plugin(tarpc_plugins)]
 
-#[cfg(test)]
-mod tests {
+extern crate rand;
 
-    #[test]
-    fn it_works() {
-        use super::some_lib_func;
-        assert!(some_lib_func() == ())
-    }
-}
+#[macro_use]
+extern crate tarpc;
+extern crate tokio_core;
+extern crate futures;
+
+#[macro_use]
+extern crate serde_derive;
+extern crate serde_json;
+
+pub mod actions;
+pub use actions::Direction;
+pub use actions::Action;
+
+pub mod rpc;
+pub use rpc::rpc_flags;
+pub use rpc::free_string;
+

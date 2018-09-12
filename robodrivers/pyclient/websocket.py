@@ -1,35 +1,29 @@
 #!/usr/bin/env python3
 """websocket client, used to retrieve the game state from the remote server at each time step"""
 import asyncio
-import signal
 from threading import Thread
 # import sys
 
 import aiohttp
+from queue import Empty
 
 
-def start_client(loop, url):
+def start_client(loop, url, queue):
     # send request
-    ws = yield from aiohttp.ClientSession().ws_connect(url, autoclose=False, autoping=False)
-
-    """
-    # input reader
-    def stdin_callback():
-        line = sys.stdin.buffer.readline().decode('utf-8')
-        if not line:
-            loop.stop()
-        else:
-            ws.send_str(line)
-    loop.add_reader(sys.stdin.fileno(), stdin_callback)
-    """
+    ws = yield from aiohttp.ClientSession().ws_connect(url, autoclose=False, autoping=False, origin='Roboclient')
 
     @asyncio.coroutine
     def dispatch():
         while True:
             msg = yield from ws.receive()
             if msg.type == aiohttp.WSMsgType.TEXT:
-                json = msg.data.strip()
-
+                json_state = msg.data.strip()
+                while not queue.empty():
+                    try:
+                        queue.get_nowait()
+                    except Empty:
+                        pass
+                queue.put(json_state)
                 # print('Text: ', msg.data.strip())
             elif msg.type == aiohttp.WSMsgType.BINARY:
                 pass
@@ -52,15 +46,15 @@ def start_client(loop, url):
     yield from dispatch()
 
 
-def start_loop(loop, url):
+def start_loop(loop, url, queue):
     asyncio.set_event_loop(loop)
-    loop.add_signal_handler(signal.SIGINT, loop.stop)
-    asyncio.Task(start_client(loop, url))
+    # loop.add_signal_handler(signal.SIGINT, loop.stop)
+    asyncio.Task(start_client(loop, url, queue))
     loop.run_forever()
 
 
-def connect(url):
+def connect(url, queue):
     # run WebSocket event loop in a new thread, to avoid blocking the main thread
     new_loop = asyncio.new_event_loop()
-    t = Thread(target=start_loop, args=(new_loop, url))
+    t = Thread(target=start_loop, args=(new_loop, url, queue))
     t.start()

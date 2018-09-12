@@ -1,5 +1,5 @@
 from policy import Policy
-from actions import import Action
+from actions import Action
 
 class RandomPolicy(Policy):
     """

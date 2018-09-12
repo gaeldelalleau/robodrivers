@@ -1,56 +1,52 @@
 use std::collections::HashMap;
+use std::thread;
 
-use tarpc::future::server;
-use tarpc::util::{FirstSocketAddr};
-use tarpc::util::Message;
-use tokio_core::reactor;
+use tarpc::sync::server;
+use tarpc::util::{FirstSocketAddr, Message, Never};
 
 use config::Config;
+use config::TeamConfig;
 use logging::LOGGER;
 use game_engine::game_state_map;
 use game_engine::actions_map;
-use game_engine::Action;
 use game_state::Team;
+
+use robodrivers::Action;
+use robodrivers::rpc;
+use ::robodrivers::rpc::SyncServiceExt;
 
 
 const MAX_RPC_REQUEST_SIZE: u64 = 8192; // in bytes
 
 
-pub mod commands {
-    use rpc::Action;
-    use rpc::Message;
-
-    service! {
-        rpc action(team_id: u32, token: String, action: Action, tick: u32) -> String | Message;
-        rpc flags(team_id: u32, token: String) -> String | Message;
-    }
-}
-use rpc::commands::FutureServiceExt as CommandsExt;
-
 struct TeamInfo {
-    id: u32,
     score: u32,
 }
 
-fn check_authentication(team_id: u32, token: String, teams: &HashMap<u32, Team>) -> Result<TeamInfo, String> {
-    match teams.get(&team_id) {
-        Some(team) =>
-            if token == team.token {
-                return Ok(TeamInfo { id: team_id, score: team.score });
+fn check_authentication(team_id: u32, token: String, teams_config: &HashMap<u32, TeamConfig>, teams: &HashMap<u32, Team>) -> Result<TeamInfo, String> {
+    match teams_config.get(&team_id) {
+        Some(team_config) =>
+            if token == team_config.token {
+                match teams.get(&team_id) {
+                    Some(team) => return Ok(TeamInfo { score: team.score }),
+                    None => (),
+                }
             },
         None => (),
     }
+    debug!(logger!(), "Received invalid team_id or token, forbidding RPC request");
     return Err("Invalid team_id or token".to_string());
 }
 
-fn is_authenticated(team_id: u32, token: String) -> Result<TeamInfo, String> {
+fn is_authenticated(team_id: u32, token: String, config: &Config) -> Result<TeamInfo, String> {
     let mut game_state_guard = game_state_guard!();
     let game_state = game_state!(game_state_guard);
-    check_authentication(team_id, token, &game_state.teams)
+    check_authentication(team_id, token, &config.teams_config, &game_state.teams)
 }
 
 fn check_tick(game_tick: u32, tick: u32) -> Result<(), String> {
     if game_tick != tick {
+        debug!(logger!(), "Received invalid tick {} instead of {}, forbidding RPC request", tick, game_tick);
         return Err(format!("Current tick is {}, but received action for tick {}", game_tick, tick));
     }
     Ok(())
@@ -61,12 +57,11 @@ struct CommandsServer {
     config: Config,
 }
 
-impl commands::FutureService for CommandsServer {
-    type ActionFut = Result<String, Message>;
+impl rpc::SyncService for CommandsServer {
 
-    fn action(&self, team_id: u32, token: String, action: Action, tick: u32) -> Self::ActionFut {
+    fn action(&self, team_id: u32, token: String, action: Action, tick: u32) -> Result<String, Message> {
         trace!(logger!(), "Received RPC action: team {}, token {}, action {:?}, tick {}", team_id, token, action, tick);
-        match is_authenticated(team_id, token) {
+        match is_authenticated(team_id, token, &self.config) {
             Err(err) => return Err(Message(err)),
             Ok(_) => (),
         }
@@ -82,12 +77,10 @@ impl commands::FutureService for CommandsServer {
         Ok(format!("Ok"))
     }
 
-    type FlagsFut = Result<String, Message>;
-
-    fn flags(&self, team_id: u32, token: String) -> Self::FlagsFut {
+    fn flags(&self, team_id: u32, token: String) -> Result<String, Message> {
         trace!(logger!(), "Received RPC flags: team id {}, token {}", team_id, token);
         let team: TeamInfo;
-        match is_authenticated(team_id, token) {
+        match is_authenticated(team_id, token, &self.config) {
             Err(err) => return Err(Message(err)),
             Ok(t) => team = t,
         }
@@ -101,33 +94,23 @@ impl commands::FutureService for CommandsServer {
             }).collect();
         Ok(format!("Your team unlocked those flags, make sure to submit them in the CTF submission interface: {:?}", flags))
     }
+
+    fn ping(&self) -> Result<String, Never> {
+        trace!(logger!(), "Received RPC ping");
+        Ok(format!("pong"))
+    }
 }
 
-pub fn start_rpc_server(config: Config) -> reactor::Core {
+pub fn start_rpc_server(config: Config) {
     trace!(logger!(), "Starting RPC server");
 
-    let reactor = reactor::Core::new().expect("Unable to create a new Reactor");
     let mut options = server::Options::default();
     options = options.max_payload_size(MAX_RPC_REQUEST_SIZE);
-    let (_handle, server) = CommandsServer { config: config }.listen("0:3011".first_socket_addr(),
-                                  &reactor.handle(),
-                                  options)
-                          .expect("Unable to listen on socket for RPC server");
-    reactor.handle().spawn(server);
+
+    let _rpc_server = thread::Builder::new().name("rpc_server".to_owned()).spawn(move || {
+        let handler = CommandsServer { config: config }.listen("0:3011".first_socket_addr(), options).expect("Unable to listen on socket for RPC server");
+        handler.run();
+    }).expect("Unable to spawn new thread for RPC server");
 
     trace!(logger!(), "RPC server started");
-    reactor
-
-    /*
-    use futures::Future;
-    use tarpc::future::client;
-    use tarpc::future::client::ClientExt;
-
-    let options = client::Options::default().handle(reactor.handle());
-    reactor.run(commands::FutureClient::connect(handle.addr(), options)
-            .map_err(tarpc::Error::from)
-            .and_then(|client| client.action("MOVE NORTH".to_string()))
-            .map(|resp| debug!(logger, "Got response {}", resp)))
-            .expect("Error while doing RPC communication");
-    */
 }

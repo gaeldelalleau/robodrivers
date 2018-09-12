@@ -1,8 +1,25 @@
 ---
 flags:
+  - score: 0
+    flag: "ICON{XXXXXXXXXX0}"
   - score: 1000
-    flag: "ICON{XXXXXXXXXX}"
-  - score: 5000
-    flag: "ICON{YYYYYYYYYYY}"
-  - score: 20000
-    flag: "ICON{ZZZZZZZZZZZZZ}"
+    flag: "ICON{XXXXXXXXXX1}"
+  - score: 2000
+    flag: "ICON{XXXXXXXXXX2}"
+teams_config:
+  7:
+    token: XXX7
+  5:
+    token: XXX5
+  2:
+    token: XXX2
+  3:
+    token: XXX3
+  8:
+    token: XXX8
+  1:
+    token: XXX1
+  4:
+    token: XXX4
+  6:
+    token: XXX6

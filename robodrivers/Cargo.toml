@@ -35,6 +35,6 @@ rand = "0.5.5"
 name = "rd-server"
 path = "src/bin/server/main.rs"
 
-[[bin]]
-name = "rd-client"
-path = "src/bin/client/main.rs"
+[lib]
+name = "robodrivers"
+crate-type = ["rlib", "dylib"]

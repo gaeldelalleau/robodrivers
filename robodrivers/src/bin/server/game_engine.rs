@@ -16,10 +16,12 @@ use game_state::Cell;
 use game_state::Item;
 use game_state::Resource;
 use game_state::Block;
-use game_state::Direction;
 use game_state::Team;
 use game_state::Car;
 use game_state::State;
+
+use robodrivers::Direction;
+use robodrivers::Action;
 
 use config::WORKING_DIRECTORY;
 use config::SERIALIZED_FILES_EXTENSION;
@@ -50,23 +52,6 @@ lazy_static! {
 
 macro_rules! actions {
     () => { actions_map.lock().expect("Unable to acquire lock for actions_map") }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Action {
-    STOP,
-    MOVE(Direction),
-    SUICIDE,
-}
-
-impl Action {
-    fn random_action() -> Action {
-        match thread_rng().gen_range(0, 1000) {
-            0...1 => Action::SUICIDE,
-            1...100 => Action::STOP,
-            _ => Action::MOVE(Direction::random_direction()) ,
-        }
-    }
 }
 
 #[derive(PartialEq, Eq, Clone, Copy)]

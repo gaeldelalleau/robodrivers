@@ -42,6 +42,14 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -86,6 +94,14 @@ map:
         items: []
       - block: OPEN
         items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
         items: []
     - - block: WALL
@@ -128,6 +144,14 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -159,6 +183,14 @@ map:
       - block: OPEN
         items: []
       - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
         items: []
       - block: OPEN
         items: []
@@ -214,6 +246,14 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -260,6 +300,14 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -300,6 +348,14 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -308,11 +364,11 @@ map:
         items: []
       - block: OPEN
         items: []
-      - block: OPEN
+      - block: WALL
         items: []
-      - block: OPEN
+      - block: WALL
         items: []
-      - block: OPEN
+      - block: WALL
         items: []
       - block: OPEN
         items: []
@@ -346,38 +402,6 @@ map:
         items: []
       - block: WALL
         items: []
-    - - block: WALL
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
       - block: OPEN
         items: []
       - block: OPEN
@@ -392,6 +416,52 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
         items: []
       - block: WALL
@@ -402,6 +472,8 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: WALL
+        items: []
       - block: OPEN
         items: []
       - block: OPEN
@@ -424,6 +496,32 @@ map:
         items: []
       - block: OPEN
         items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items:
+          - PRODUCER:
+              resource:
+                GAS: 3
+              cooldown: 16
+              respawn_in: 0
+              on_cooldown: false
+      - block: OPEN
+        items:
+          - PRODUCER:
+              resource:
+                GAS: 9
+              cooldown: 28
+              respawn_in: 0
+              on_cooldown: false
+      - block: OPEN
+        items:
+          - PRODUCER:
+              resource:
+                GAS: 3
+              cooldown: 16
+              respawn_in: 0
+              on_cooldown: false
       - block: WALL
         items: []
     - - block: WALL
@@ -466,6 +564,14 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -505,6 +611,14 @@ map:
       - block: OPEN
         items: []
       - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items: []
     - - block: WALL
         items: []
@@ -552,8 +666,6 @@ map:
         items: []
       - block: WALL
         items: []
-    - - block: WALL
-        items: []
       - block: OPEN
         items: []
       - block: OPEN
@@ -561,36 +673,6 @@ map:
       - block: OPEN
         items: []
       - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
         items: []
     - - block: WALL
         items: []
@@ -632,8 +714,6 @@ map:
         items: []
       - block: WALL
         items: []
-    - - block: WALL
-        items: []
       - block: OPEN
         items: []
       - block: OPEN
@@ -641,116 +721,6 @@ map:
       - block: OPEN
         items: []
       - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
-        items: []
-    - - block: WALL
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
-        items: []
-    - - block: WALL
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
-        items: []
-      - block: WALL
-        items: []
-      - block: WALL
-        items: []
-      - block: WALL
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: OPEN
-        items: []
-      - block: WALL
         items: []
     - - block: WALL
         items: []
@@ -792,6 +762,62 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+    - - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
     - - block: WALL
         items: []
       - block: OPEN
@@ -832,63 +858,13 @@ map:
         items: []
       - block: WALL
         items: []
-    - - block: WALL
+      - block: OPEN
         items: []
       - block: OPEN
-        items:
-          - BASE
+        items: []
       - block: OPEN
-        items:
-          - BASE
+        items: []
       - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: OPEN
-        items:
-          - BASE
-      - block: WALL
         items: []
     - - block: WALL
         items: []
@@ -898,7 +874,111 @@ map:
         items: []
       - block: WALL
         items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
       - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+    - - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: WALL
+        items: []
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: OPEN
+        items:
+          - BASE
+      - block: WALL
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+    - - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items: []
       - block: WALL
         items: []
@@ -928,110 +1008,54 @@ map:
         items: []
       - block: WALL
         items: []
-      - block: WALL
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
+        items: []
+      - block: OPEN
         items: []
 teams:
-  2:
-    name: team 2
-    color: "#00aa00"
-    score: 0
-    token: XXX2
-  8:
-    name: team 8
-    color: "#44aaff"
-    score: 0
-    token: XXX8
-  1:
-    name: team 1
-    color: "#aa0000"
-    score: 0
-    token: XXX1
-  3:
-    name: team 3
-    color: "#0000aa"
-    score: 0
-    token: XXX3
-  4:
-    name: team 4
-    color: "#aaaa00"
-    score: 0
-    token: XXX4
-  5:
-    name: team 5
-    color: "#00aaaa"
-    score: 0
-    token: XXX5
   6:
     name: team 6
     color: "#aaaaaa"
     score: 0
-    token: XXX6
   7:
     name: team 7
     color: "#aa00aa"
     score: 0
-    token: XXX7
-cars:
-  3:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    killed: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 3
-  2:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    killed: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 2
-  8:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    killed: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 8
+  4:
+    name: team 4
+    color: "#aaaa00"
+    score: 0
   1:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    killed: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 1
-  7:
-    x: 0
-    "y": 0
-    next_x: 0
-    next_y: 0
-    collided: false
-    killed: false
-    health: 3
-    max_health: 3
-    resources: 0
-    state: STOPPED
-    team_id: 7
+    name: team 1
+    color: "#aa0000"
+    score: 0
+  8:
+    name: team 8
+    color: "#44aaff"
+    score: 0
+  5:
+    name: team 5
+    color: "#00aaaa"
+    score: 0
+  2:
+    name: team 2
+    color: "#00aa00"
+    score: 0
+  3:
+    name: team 3
+    color: "#0000aa"
+    score: 0
+cars:
   5:
     x: 0
     "y": 0
@@ -1044,7 +1068,7 @@ cars:
     resources: 0
     state: STOPPED
     team_id: 5
-  4:
+  7:
     x: 0
     "y": 0
     next_x: 0
@@ -1055,7 +1079,7 @@ cars:
     max_health: 3
     resources: 0
     state: STOPPED
-    team_id: 4
+    team_id: 7
   6:
     x: 0
     "y": 0
@@ -1068,4 +1092,64 @@ cars:
     resources: 0
     state: STOPPED
     team_id: 6
+  1:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 1
+  3:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 3
+  8:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 8
+  2:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 2
+  4:
+    x: 0
+    "y": 0
+    next_x: 0
+    next_y: 0
+    collided: false
+    killed: false
+    health: 3
+    max_health: 3
+    resources: 0
+    state: STOPPED
+    team_id: 4
 tick: 0

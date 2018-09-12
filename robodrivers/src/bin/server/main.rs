@@ -86,7 +86,7 @@ fn run(matches: ArgMatches) -> Result<(), String> {
     info!(logger!(), "Game initialized");
 
     let ws_broadcaster = start_ws_server();
-    let _rpc_reactor = start_rpc_server(config);
+    start_rpc_server(config);
     info!(logger!(), "Ready to accept connections");
 
     game_engine.start(ws_broadcaster);

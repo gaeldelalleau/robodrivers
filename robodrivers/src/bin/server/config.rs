@@ -4,6 +4,7 @@ use std::fs::{File, OpenOptions};
 use std::io::Read;
 use std::env;
 use std::path::PathBuf;
+use std::collections::HashMap;
 use dirs;
 
 use logging::LOGGER;
@@ -31,8 +32,14 @@ pub struct Flag {
 }
 
 #[derive(Default, Serialize, Deserialize, Debug, Clone)]
+pub struct TeamConfig {
+    pub token: String,
+}
+
+#[derive(Default, Serialize, Deserialize, Debug, Clone)]
 pub struct Config {
     pub flags: Vec<Flag>,
+    pub teams_config: HashMap<u32, TeamConfig>,
 }
 
 impl Config {
@@ -63,12 +70,21 @@ impl Config {
 pub fn recreate_config() -> () {
     let mut config = Config::default();
     {
+        let nb_flags = 3;
         let flags = &mut config.flags;
-        for _ in 0..3 {
-            flags.push(Flag { score: 1000, flag: "ICON{XXXXXXXXXX}".to_string() });
+        for i in 0..nb_flags {
+            flags.push(Flag { score: 1000*i, flag: format!("ICON{{XXXXXXXXXX{}}}", i).to_string() });
+        }
+
+        let nb_teams = 8;
+        let teams_config = &mut config.teams_config;
+        let team_tokens  = vec![ "XXX1", "XXX2", "XXX3", "XXX4", "XXX5", "XXX6", "XXX7", "XXX8" ];
+        for i in 0..nb_teams {
+            let team_id = i + 1;
+            teams_config.insert(team_id, TeamConfig {
+                token: team_tokens[i as usize].to_string(),
+            });
         }
     }
     println!("{}", config.to_serialized());
 }
-
-
