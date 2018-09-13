@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::thread;
+use std::sync::mpsc;
 
 use tarpc::sync::server;
 use tarpc::util::{FirstSocketAddr, Message, Never};
@@ -18,6 +19,11 @@ use ::robodrivers::rpc::SyncServiceExt;
 
 const MAX_RPC_REQUEST_SIZE: u64 = 8192; // in bytes
 
+
+pub enum Command {
+    STEP,
+    RESET,
+}
 
 struct TeamInfo {
     score: u32,
@@ -55,6 +61,8 @@ fn check_tick(game_tick: u32, tick: u32) -> Result<(), String> {
 #[derive(Clone)]
 struct CommandsServer {
     config: Config,
+    remote_control: bool,
+    sender: mpsc::Sender<Command>,
 }
 
 impl rpc::SyncService for CommandsServer {
@@ -95,20 +103,60 @@ impl rpc::SyncService for CommandsServer {
         Ok(format!("Your team unlocked those flags, make sure to submit them in the CTF submission interface: {:?}", flags))
     }
 
+    fn step(&self, team_id: u32, token: String) -> Result<String, Message> {
+        trace!(logger!(), "Received RPC step: team id {}, token {}", team_id, token);
+        if self.remote_control {
+            debug!(logger!(), "Denying request for RPC step: team id {}, token {}", team_id, token);
+            return Err(Message("Forbidden by server configuration".to_string()));
+       }
+        match is_authenticated(team_id, token, &self.config) {
+            Err(err) => return Err(Message(err)),
+            Ok(_) => (),
+        }
+        debug!(logger!(), "Received valid RPC step request by team id {}", team_id);
+
+        match self.sender.send(Command::STEP) {
+            Ok(_) => (),
+            Err(e) => return Err(Message(format!("Error while sending RPC message through channel: {}", e))),
+        }
+
+        Ok(format!("OK"))
+    }
+
+    fn reset(&self, team_id: u32, token: String) -> Result<String, Message> {
+        trace!(logger!(), "Received RPC reset: team id {}, token {}", team_id, token);
+        if self.remote_control {
+            debug!(logger!(), "Denying request for RPC reset: team id {}, token {}", team_id, token);
+            return Err(Message("Forbidden by server configuration".to_string()));
+       }
+        match is_authenticated(team_id, token, &self.config) {
+            Err(err) => return Err(Message(err)),
+            Ok(_) => (),
+        }
+        debug!(logger!(), "Received valid RPC reset request by team id {}", team_id);
+
+        match self.sender.send(Command::RESET) {
+            Ok(_) => (),
+            Err(e) => return Err(Message(format!("Error while sending RPC message through channel: {}", e))),
+        }
+
+        Ok(format!("OK"))
+    }
+
     fn ping(&self) -> Result<String, Never> {
         trace!(logger!(), "Received RPC ping");
         Ok(format!("pong"))
     }
 }
 
-pub fn start_rpc_server(config: Config) {
+pub fn start_rpc_server(send: mpsc::Sender<Command>, config: Config, remote_control: bool) {
     trace!(logger!(), "Starting RPC server");
 
     let mut options = server::Options::default();
     options = options.max_payload_size(MAX_RPC_REQUEST_SIZE);
 
     let _rpc_server = thread::Builder::new().name("rpc_server".to_owned()).spawn(move || {
-        let handler = CommandsServer { config: config }.listen("0:3011".first_socket_addr(), options).expect("Unable to listen on socket for RPC server");
+        let handler = CommandsServer { config: config, remote_control: remote_control, sender: send }.listen("0:3011".first_socket_addr(), options).expect("Unable to listen on socket for RPC server");
         handler.run();
     }).expect("Unable to spawn new thread for RPC server");
 

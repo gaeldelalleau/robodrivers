@@ -1,9 +1,8 @@
-use std::thread;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write, Seek, SeekFrom};
-use std::time;
 use std::sync::Mutex;
+use std::path::PathBuf;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
@@ -23,7 +22,6 @@ use game_state::State;
 use robodrivers::Direction;
 use robodrivers::Action;
 
-use config::WORKING_DIRECTORY;
 use config::SERIALIZED_FILES_EXTENSION;
 
 use logging::LOGGER;
@@ -70,34 +68,36 @@ pub struct GameEngine {
 
 impl GameEngine {
 
-    fn get_game_state_file(game_id: u32) -> File {
-        let mut base_game_state_file = WORKING_DIRECTORY.clone();
+    fn get_game_state_file(game_id: u32, config_dir_path: &PathBuf, reset: bool) -> File {
+        let mut base_game_state_file = config_dir_path.clone();
         base_game_state_file.push(BASE_GAME_STATE_FILENAME);
         base_game_state_file.set_extension(SERIALIZED_FILES_EXTENSION);
 
-        let mut current_game_state_file = WORKING_DIRECTORY.clone();
+        let mut current_game_state_file = config_dir_path.clone();
         current_game_state_file.push(CURRENT_GAME_STATE_FILENAME.replace("{}", &game_id.to_string()));
         current_game_state_file.set_extension(SERIALIZED_FILES_EXTENSION);
 
-        debug!(logger!(), "Reading config files from {}", WORKING_DIRECTORY.clone().display());
+        debug!(logger!(), "Reading config files from {}", config_dir_path.clone().display());
         debug!(logger!(), "Current game state file is: {}", current_game_state_file.clone().display());
 
+        if !reset {
+            match OpenOptions::new().read(true).write(true).open(&current_game_state_file) {
+                Ok(file) => return file,
+                Err(_) => (),
+            }
+        }
+
+        info!(logger!(), "Creating a new game state file for game {}", game_id);
+        fs::copy(&base_game_state_file, &current_game_state_file).expect("Unable to copy base game state file to current game state file");
         match OpenOptions::new().read(true).write(true).open(&current_game_state_file) {
             Ok(file) => file,
-            Err(_) => {
-                info!(logger!(), "No game state file found for game {}, will create a fresh one", game_id);
-                fs::copy(&base_game_state_file, &current_game_state_file).expect("Unable to copy base game state file to current game state file");
-                match OpenOptions::new().read(true).write(true).open(&current_game_state_file) {
-                    Ok(file) => file,
-                    Err(_) => panic!("Couldn't copy base game state file {} to file {}", base_game_state_file.display(), current_game_state_file.display()),
-                }
-            }
+            Err(_) => panic!("Couldn't copy base game state file {} to file {}", base_game_state_file.display(), current_game_state_file.display()),
         }
     }
 
-    pub fn new(simulate: bool) -> GameEngine {
+    pub fn new(simulate: bool, config_dir: &PathBuf, reset: bool) -> GameEngine {
         let game_id = 0;
-        let mut file = GameEngine::get_game_state_file(game_id);
+        let mut file = GameEngine::get_game_state_file(game_id, &config_dir, reset);
 
         let mut serialized = String::new();
         file.read_to_string(&mut serialized).expect("Unable to read game state file");
@@ -478,7 +478,7 @@ impl GameEngine {
         }
     }
 
-    fn step(self: &mut Self) -> () {
+    pub fn step(self: &mut Self) -> () {
         let mut game_state_guard = game_state_guard!();
         let game_state = game_state!(game_state_guard, self.game_id);
 
@@ -491,7 +491,17 @@ impl GameEngine {
         game_state.tick += 1;
     }
 
-    pub fn start(self: &mut Self, ws_broadcaster: ws::Sender) -> () {
+    pub fn broadcast(self: &mut Self, ws_broadcaster: &ws::Sender) -> () {
+        ws_broadcaster.send(game_state!(game_state_guard!(), &self.game_id).to_json()).expect("Broadcast to WebSocket failed");
+    }
+
+    pub fn save_periodically(self: &mut Self, period: u32) {
+        if game_state!(game_state_guard!(), &self.game_id).tick % period == 0 {
+            self.save_game_state();
+        }
+    }
+
+    pub fn init(self: &mut Self) -> () {
         trace!(logger!(), "Initializing map objects");
         {
             let mut game_state_guard = game_state_guard!();
@@ -499,16 +509,6 @@ impl GameEngine {
 
             for &team_id in game_state.teams.keys() {
                 self.spawn(&mut game_state.cars, team_id);
-            }
-        }
-
-        trace!(logger!(), "Starting game loop");
-        loop {
-            thread::sleep(time::Duration::from_millis(100));
-            self.step();
-            ws_broadcaster.send(game_state!(game_state_guard!(), &self.game_id).to_json()).expect("Broadcast to WebSocket failed");
-            if game_state!(game_state_guard!(), &self.game_id).tick % 10 == 0 {
-                self.save_game_state();
             }
         }
     }

@@ -8,4 +8,4 @@ RUN rustup default nightly
 
 RUN cargo build
 
-ENTRYPOINT ["target/debug/rd-server"]
+ENTRYPOINT ["target/debug/rd-server", "-c /server/config"]

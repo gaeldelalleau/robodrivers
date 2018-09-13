@@ -17,6 +17,8 @@ use Action;
 service! {
     rpc action(team_id: u32, token: String, action: Action, tick: u32) -> String | Message;
     rpc flags(team_id: u32, token: String) -> String | Message;
+    rpc step(team_id: u32, token: String) -> String | Message;
+    rpc reset(team_id: u32, token: String) -> String | Message;
     rpc ping() -> String | Never;
 }
 
@@ -95,38 +97,15 @@ pub extern fn rpc_flags(cstring_host_and_port: *const c_char, team_id: u32, cstr
     rpc_perform(|client, token| { client.flags(team_id, token) }, cstring_host_and_port, cstring_token)
 }
 
-/*
 #[no_mangle]
-pub extern fn rpc_flags(cstring_host_and_port: *const c_char, team_id: u32, cstring_token: *const c_char) -> *mut c_char {
-    let host_and_port = match str_from(cstring_host_and_port) {
-        Ok(s) => s,
-        Err(e) => return c_char_from(format!("ERROR: CString conversion error for variable cstring_host_and_port: {}", e)),
-    };
-
-    let token = match str_from(cstring_token) {
-        Ok(s) => s,
-        Err(e) => return c_char_from(format!("ERROR: CString conversion error for variable cstring_token: {}", e)),
-    };
-
-    let socket_addr: SocketAddr = match host_and_port.parse() {
-        Ok(s) => s,
-        Err(e) => return c_char_from(format!("ERROR: Unable to parse socket address from {}: {}", host_and_port, e)),
-    };
-
-    let options = client::Options::default();
-    let client = match SyncClient::connect(socket_addr, options) {
-        Ok(c) => c,
-        Err(e) => return c_char_from(format!("ERROR: Unable to connect to RPC service on {}: {}", host_and_port, e)),
-    };
-
-    let response = match client.flags(team_id, token.to_string()) {
-        Ok(r) => r,
-        Err(e) => return c_char_from(format!("ERROR: error while doing RPC communication: {}", e)),
-    };
-
-    c_char_from(format!("{}", response))
+pub extern fn rpc_step(cstring_host_and_port: *const c_char, team_id: u32, cstring_token: *const c_char) -> *mut c_char {
+    rpc_perform(|client, token| { client.step(team_id, token) }, cstring_host_and_port, cstring_token)
 }
-*/
+
+#[no_mangle]
+pub extern fn rpc_reset(cstring_host_and_port: *const c_char, team_id: u32, cstring_token: *const c_char) -> *mut c_char {
+    rpc_perform(|client, token| { client.reset(team_id, token) }, cstring_host_and_port, cstring_token)
+}
 
 #[no_mangle]
 pub extern fn rpc_ping(cstring_host_and_port: *const c_char) -> *mut c_char {

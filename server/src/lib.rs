@@ -20,5 +20,7 @@ pub use actions::Action;
 
 pub mod rpc;
 pub use rpc::rpc_flags;
+pub use rpc::rpc_action;
+pub use rpc::rpc_step;
+pub use rpc::rpc_reset;
 pub use rpc::free_string;
-

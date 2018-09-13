@@ -46,6 +46,26 @@ class RustBindings():
         self.__free_string(response_string)
         return response
 
+    def rpc_step(self, host_and_port, team_id, token):
+        func = self.lib.rpc_step
+        func.restype = c_void_p
+        func.argtypes = [c_char_p, c_uint, c_char_p]
+
+        response_string = func(host_and_port.encode('utf-8'), team_id, token.encode('utf-8'))
+        response = cast(response_string, c_char_p).value.decode('utf-8')
+        self.__free_string(response_string)
+        return response
+
+    def rpc_reset(self, host_and_port, team_id, token):
+        func = self.lib.rpc_reset
+        func.restype = c_void_p
+        func.argtypes = [c_char_p, c_uint, c_char_p]
+
+        response_string = func(host_and_port.encode('utf-8'), team_id, token.encode('utf-8'))
+        response = cast(response_string, c_char_p).value.decode('utf-8')
+        self.__free_string(response_string)
+        return response
+
     def ping(self, host_and_port):
         func = self.lib.rpc_ping
         func.restype = c_void_p

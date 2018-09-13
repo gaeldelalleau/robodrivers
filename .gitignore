@@ -12,4 +12,4 @@ server/target/
 **/__pycache__/
 **/*.pyc
 
-server/game_state_0.yaml
+server/config/game_state_0.yaml
