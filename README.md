@@ -6,11 +6,14 @@ Each team controls one agent.
 
 ## Installation
 
+The easiest way to get started is to use docker-compose, but you can also use docker directly or install everything on your local computer.
+
 ### With docker-compose
 
 ```
 docker-compose up
 ```
+That should launch the web and server containers, and a client container with a default agent using a random policy.
 
 ### With Docker
 
@@ -84,6 +87,12 @@ To connect to the server and run actions with a default policy for your agent, d
 docker run --rm [--network=robonet] -it roboclient --host <server ip> run
 ```
 
+Do not forget to also pass these authentication parameters if you are connecting to the remote challenge server:
+```
+--team TEAM_ID       Your team identifier
+--token TOKEN        Your team token
+```
+
 #### Building the Rust dependency manually for the client (NOT NEEDED if you use Docker) 
 
 If you want to run the client locally without using docker, you need to have compiled a dependency first: a Rust shared library.
@@ -110,14 +119,22 @@ Now try to update the client's policy scripts to get a better score!
 Have an idea for better competitive heuristics or path finding? Reinforcement learning? Genetic algorithms maybe?
 Just go for it!
 
-The "train" command is currently unimplemented in the client. That's your job too :)
+The first step to get started could be to edit these lines in roboclient.py:
+```
+    # Change these to run your own policies:
+    policy = RandomPolicy()
+    agent = Agent(policy)
+```
+in order to use your own policy class, or directly modify the file implementing the HeuristicPolicy class, for instance.
+
+For more advanced machine learning algorithms requiring training, the "train" command exists but is currently unimplemented in the client. That's your job too :)
 
 ### How to validate the flags
 
 If you manage to reach certain score thresholds, flags will be unlocked.
 You can see the flags you unlocked with:
 ```
-docker run --rm -it roboclient --host <server ip> flags
+docker run --rm -it roboclient --team TEAM_ID --token TOKEN --host <server ip> flags
 ```
 
 Make sure to check them periodically, as the score thresholds may be updated during the day!
