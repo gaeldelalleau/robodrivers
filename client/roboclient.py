@@ -4,6 +4,7 @@ import argparse
 import json
 import random
 from queue import Queue
+import socket
 
 import websocket
 from rpc import Rpc
@@ -57,8 +58,12 @@ def get_tick(game_state):
     return int(game_state['tick'])
 
 
+def host2ip(host):
+    return socket.gethostbyname(host)
+
+
 def run(args):
-    ws_url = 'ws://{}:{}'.format(args.host, args.ws_port)
+    ws_url = 'ws://{}:{}'.format(host2ip(args.host), args.ws_port)
     queue = Queue()
     websocket.connect(ws_url, queue)
 
@@ -108,7 +113,7 @@ def main():
     args = parse_args()
 
     rust_bindings = RustBindings(args.lib_dir)
-    rpc = Rpc(rust_bindings, args.host, args.rpc_port, args.team_id, args.token)
+    rpc = Rpc(rust_bindings, host2ip(args.host), args.rpc_port, args.team_id, args.token)
 
     if args.action == 'run':
         run(args)
