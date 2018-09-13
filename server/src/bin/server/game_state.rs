@@ -167,7 +167,7 @@ pub fn recreate_game_state() -> () {
                      val @ '1' ... '9' => {
                         let value = val.to_digit(10).unwrap();
                         let cooldown = 10 + value*2;
-                        let producer = Producer { resource: Resource::GAS(value), cooldown: cooldown, respawn_in: 0, on_cooldown: false };
+                        let producer = Producer { resource: Resource::GAS(value), cooldown: cooldown, respawn_in: 1, on_cooldown: true };
                         items.push(Item::PRODUCER(producer));
                     },
                     _ => ()

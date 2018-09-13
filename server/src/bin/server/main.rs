@@ -79,7 +79,10 @@ fn run(matches: ArgMatches) -> Result<(), String> {
         _ => ()
     }
 
-    let config_dir = matches.value_of("config_dir");
+    let config_dir = match matches.value_of("config_dir") {
+        Some(d) => Some(d),
+        None => Some("config"),
+    };
 
     let (config, config_dir_path) = Config::new(config_dir);
     trace!(logger!(), "Configuration loaded");

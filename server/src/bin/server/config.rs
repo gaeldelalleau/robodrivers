@@ -41,7 +41,7 @@ impl Config {
                 if config_file.exists() {
                     return PathBuf::from(d);
                 } else {
-                    panic!("Configuration file not found in specified directory");
+                   warn!(logger!(), "Configuration file not found in specified directory");
                 }
             },
             None => (),

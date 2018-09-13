@@ -1,9 +1,9 @@
 from policy import Policy
 from actions import Action
-import random
-
 from actions import ActionType
 from actions import Direction
+
+import random
 
 
 class RandomPolicy(Policy):
@@ -14,7 +14,7 @@ class RandomPolicy(Policy):
     def __init__(self):
         super().__init__()
 
-    def action(self, observation):
+    def action(self, team_id, observation):
         """
         Chose an action at random, with a bias towards moving
         """

@@ -10,6 +10,7 @@ import websocket
 from rpc import Rpc
 from agent import Agent
 from random_policy import RandomPolicy
+from heuristic_policy import HeuristicPolicy
 from rust_bindings import RustBindings
 
 
@@ -69,7 +70,8 @@ def run(args):
 
     # Change these to run your own policies:
     policy = RandomPolicy()
-    agent = Agent(policy)
+    # policy = HeuristicPolicy()
+    agent = Agent(args.team_id, policy)
 
     tick = None
 
