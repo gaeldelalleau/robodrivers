@@ -7,7 +7,7 @@ WORKDIR /
 
 RUN USER=root cargo new server
 
-COPY Cargo.toml /server/
+COPY Cargo.toml_deps /server/Cargo.toml
 
 WORKDIR /server
 
