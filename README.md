@@ -2,7 +2,7 @@
 
 Autonomous agents roaming in the city's underground tunnels to collect resources.
 
-Each team controls one agent.
+Each team controls one agent, thus this is a competitive multi-agents setting.
 
 ## Installation
 
