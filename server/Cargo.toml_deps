@@ -1,0 +1,32 @@
+[package]
+name = "robodrivers"
+version = "0.1.0"
+authors = ["Gaël Delalleau"]
+description = "Robodrivers core engine"
+
+# Prevent publishing by mistake 
+publish = false
+
+# Setting the license field instead of license-file as an additional safeguard
+# against accidental publishing (as the license field is validated against a
+# whitelist by crates.io)
+#license-file = "LICENSE.md"
+license = "Proprietary license file - DO NOT DISTRIBUTE"
+
+[dependencies]
+lazy_static = "1.1.0"
+clap = "2.32.0"
+slog = { version = "2.3.3", features = ["max_level_trace", "release_max_level_debug"] }
+slog-term = "2.4.0"
+slog-async = "2.3.0"
+ws = "0.7.8"
+tarpc = { version = "0.12.1", git="https://github.com/google/tarpc.git", branch="master" }
+tarpc-plugins = { version = "0.4.0", git="https://github.com/google/tarpc.git", branch="master" }
+futures = "0.1.23"
+tokio-core = "0.1.17"
+serde = "1.0"
+serde_derive = "1.0"
+serde_yaml = "0.8.3"
+serde_json = "1.0.27"
+dirs = "1.0.3"
+rand = "0.5.5"
