@@ -122,7 +122,7 @@ fn run(matches: ArgMatches) -> Result<(), String> {
     } else {
         info!(logger!(), "Starting automatic game loop");
         loop {
-            thread::sleep(time::Duration::from_millis(300));
+            thread::sleep(time::Duration::from_millis(30));
             game_engine.step();
             game_engine.broadcast(&ws_broadcaster);
             game_engine.save_periodically(10);
