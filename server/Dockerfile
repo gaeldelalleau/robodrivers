@@ -14,6 +14,8 @@ WORKDIR /server
 # Dummy build to get the dependencies cached.
 RUN cargo build
 
+RUN rm -f /server/src/main.rs
+
 COPY . /server
 
 WORKDIR /server
