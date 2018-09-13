@@ -105,7 +105,7 @@ impl rpc::SyncService for CommandsServer {
 
     fn step(&self, team_id: u32, token: String) -> Result<String, Message> {
         trace!(logger!(), "Received RPC step: team id {}, token {}", team_id, token);
-        if self.remote_control {
+        if !self.remote_control {
             debug!(logger!(), "Denying request for RPC step: team id {}, token {}", team_id, token);
             return Err(Message("Forbidden by server configuration".to_string()));
        }
@@ -125,7 +125,7 @@ impl rpc::SyncService for CommandsServer {
 
     fn reset(&self, team_id: u32, token: String) -> Result<String, Message> {
         trace!(logger!(), "Received RPC reset: team id {}, token {}", team_id, token);
-        if self.remote_control {
+        if !self.remote_control {
             debug!(logger!(), "Denying request for RPC reset: team id {}, token {}", team_id, token);
             return Err(Message("Forbidden by server configuration".to_string()));
        }

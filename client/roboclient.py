@@ -102,8 +102,36 @@ def show_flags(args):
     print(response)
 
 
+# Implement this to train a new policy! (see README.md)
 def train(args):
-    pass
+    """
+    Some sample code just to help you getting started
+    """
+    ws_url = 'ws://{}:{}'.format(host2ip(args.host), args.ws_port)
+    queue = Queue()
+    websocket.connect(ws_url, queue)
+
+    policy = RandomPolicy()
+    agent = Agent(args.team_id, policy)
+
+    while True:
+        # advance by one tick
+        rpc.step()
+
+        # observe new game state
+        json_state = queue.get()
+        game_state = json.loads(json_state)
+        tick = get_tick(game_state)
+        observation = observe(game_state)
+
+        # apply some logic to select a next action
+        action = agent.forward(observation)
+
+        # send action
+        rpc.action(action, tick)
+
+        # reset game (if you want to)
+        rpc.reset()
 
 
 def main():

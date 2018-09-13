@@ -20,10 +20,10 @@ class Rpc():
         return self.check(self.rust_bindings.rpc_flags(self.host_and_port, self.team_id, self.token))
 
     def step(self):
-        return self.check(self.rust_bindings.step(self.host_and_port, self.team_id, self.token))
+        return self.check(self.rust_bindings.rpc_step(self.host_and_port, self.team_id, self.token))
 
     def reset(self):
-        return self.check(self.rust_bindings.reset(self.host_and_port, self.team_id, self.token))
+        return self.check(self.rust_bindings.rpc_reset(self.host_and_port, self.team_id, self.token))
 
     def ping(self):
-        return self.check(self.rust_bindings.ping(self.host_and_port))
+        return self.check(self.rust_bindings.rpc_ping(self.host_and_port))

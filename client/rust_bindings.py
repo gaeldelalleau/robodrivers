@@ -66,7 +66,7 @@ class RustBindings():
         self.__free_string(response_string)
         return response
 
-    def ping(self, host_and_port):
+    def rpc_ping(self, host_and_port):
         func = self.lib.rpc_ping
         func.restype = c_void_p
         func.argtypes = [c_char_p]
