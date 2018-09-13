@@ -139,7 +139,7 @@ rpc.step()      advance the game engine state by 1 tick
 rpc.reset()     reset the game state
 ```
 
-To observe the game state after calling the step() API, the websocket API can be used in a similar way as in the run() command of the client.
+To observe the game state after calling the step() API, the websocket API can be used in a similar way as in the run() command of the client (queue.get())
 
 ### How to validate the flags
 
