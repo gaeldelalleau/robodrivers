@@ -127,7 +127,19 @@ The first step to get started could be to edit these lines in roboclient.py:
 ```
 in order to use your own policy class, or directly modify the file implementing the HeuristicPolicy class, for instance.
 
-For more advanced machine learning algorithms requiring training, the "train" command exists but is currently unimplemented in the client. That's your job too :)
+### Training a policy
+
+For more advanced machine learning algorithms requiring training, the "train" command exists but is currently unimplemented in the client. That's your job!
+
+Some hooks have been added to facilitate your job, quite similar to OpenAI Gym:
+You should run the server with the -z command line option (short for "--remote\_control")
+This will allow you to control the game state through two additional APIs:
+```
+rpc.step()      advance the game engine state by 1 tick
+rpc.reset()     reset the game state
+```
+
+To observe the game state after calling the step() API, the websocket API can be used in a similar way as in the run() command of the client.
 
 ### How to validate the flags
 
