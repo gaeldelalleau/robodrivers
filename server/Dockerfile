@@ -7,7 +7,7 @@ WORKDIR /
 
 RUN USER=root cargo new server
 
-COPY Cargo.toml Cargo.lock /server/
+COPY Cargo.toml /server/
 
 WORKDIR /server
 
