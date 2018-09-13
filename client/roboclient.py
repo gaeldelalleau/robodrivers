@@ -103,6 +103,7 @@ def show_flags(args):
 
 
 # Implement this to train a new policy! (see README.md)
+# Do not forget to run the server with the -z option
 def train(args):
     """
     Some sample code just to help you getting started
