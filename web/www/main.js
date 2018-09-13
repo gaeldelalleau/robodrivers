@@ -33,10 +33,15 @@ var Robodrivers = new Phaser.Class({
         this.load.image('red', 'assets/red.png');
         this.load.image('white', 'assets/white.png');
         this.load.image('explosion', 'assets/explosion.png');
+
+        this.load.image('logo', 'assets/icon-logo-small.png');
     },
 
     create: function()
     {
+        var logo = this.add.image(800-140/2-10, 680-80, 'logo');
+        logo.setDisplaySize(140, 100);
+        logo.setDepth(3);
 
         //this.particles = this.add.particles('white');
 
