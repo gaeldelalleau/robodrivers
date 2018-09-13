@@ -258,21 +258,25 @@ var Robodrivers = new Phaser.Class({
                 if (car.state.hasOwnProperty("MOVING"))
                 {
                     var angle;
+                    var v_x = 0;
+                    var v_y = 0;
                     switch(car.state["MOVING"])
                     {
-                        case "NORTH": angle = 0; break;
-                        case "SOUTH": angle = 180; break;
-                        case "EAST": angle = 90; break;
-                        case "WEST": angle = 270; break;
+                        case "NORTH": angle = 0; v_x = 0; v_y = -1; break;
+                        case "SOUTH": angle = 180; v_x = 0; v_y = 1; break;
+                        case "EAST": angle = 90; v_x = 1; v_y = 0; break;
+                        case "WEST": angle = 270; v_x = -1 ; v_y = 0; break;
                     }
                     car_sprite.setAngle(angle - 90);
                     //this.emitters[id].setPosition(x, y);
+                    //car_sprite.setVelocity(this.config.block_size*v_x*2, this.config.block_size*v_y*2);
                 }
                 else
                 {
                     car_sprite.setAngle(0);
                     car_sprite.setTintFill(0x555555);
                     //this.emitters[id].setPosition(-100000, -100000);
+                    //car_sprite.setVelocity(0, 0);
                 }
                 if (car.collided === true)
                 {
