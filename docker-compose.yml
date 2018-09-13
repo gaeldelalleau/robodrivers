@@ -10,8 +10,8 @@ services:
     ports:
       - "3011:3011"
       - "3012:3012"
-#    volumes:
-#      - /server/config
+    volumes:
+      - /server/config
     entrypoint:
       - target/debug/rd-server
       - -v
