@@ -45,32 +45,6 @@ var Robodrivers = new Phaser.Class({
 
         //this.particles = this.add.particles('white');
 
-        /*
-        platforms = this.physics.add.staticGroup();
-        platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-        player = this.physics.add.sprite(100, 450, 'dude');
-        player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
-
-        this.physics.add.collider(player, platforms);
-
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        */
-
-        /*
-        var logo = this.physics.add.image(400, 100, 'logo');
-        logo.setVelocity(100, 200);
-        logo.setBounce(1, 1);
-        logo.setCollideWorldBounds(true);
-
-        emitter.startFollow(logo);
-        */
     },
 
     create_cars: function(teams)

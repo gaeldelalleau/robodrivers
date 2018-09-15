@@ -13,3 +13,4 @@ server/target/
 **/*.pyc
 
 server/config/game_state_0.yaml
+client/dqn_roborl_weights.h5f
