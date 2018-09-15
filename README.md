@@ -4,6 +4,8 @@ Autonomous agents roaming in the city's underground tunnels to collect resources
 
 Each team controls one agent, thus this is a competitive multi-agents setting.
 
+![](https://raw.githubusercontent.com/gaeldelalleau/robodrivers/github_assets/screenshot.jpg)
+
 ## Installation
 
 The easiest way to get started is to use docker-compose, but you can also use docker directly or install everything on your local computer.
