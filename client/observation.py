@@ -1,23 +1,32 @@
 from enum import Enum
 import numpy as np
+from actions import Direction
+
+
+class Car():
+    def __init__(self, car):
+        self.x = int(car['x'])
+        self.y = int(car['y'])
+        self.health = int(car['health'])
+        self.resources = int(car['resources'])
+        self.collided = bool(car['collided'])
+        self.killed = bool(car['killed'])
+        self.state = State(car['state'])
 
 
 class StateType(Enum):
     STOPPED = 1
     MOVING = 2
 
-    def new(s):
-        if isinstance(s, dict) and "MOVING" in s:
-            return StateType.MOVING
-        elif s == 'STOPPED':
-            return StateType.STOPPED
-        else:
-            raise 'Unknown state'
-
 
 class State():
-    def __init__(self, state_type):
-        self.state_type = state_type
+    def __init__(self, state):
+        if isinstance(state, dict):
+            self.state_type = StateType[list(state.keys())[0]]
+            self.direction = Direction[state[list(state.keys())[0]]]
+        else:
+            self.state_type = StateType[state]
+            self.direction = None
 
 
 class ItemType(Enum):
@@ -82,18 +91,13 @@ class Observation():
         self.previous_observation = previous
 
     def parse(self, game_state, team_id):
-        self.cars = game_state['cars']
         self.map = game_state['map']
+        self.cars = {str(k): Car(v) for k, v in game_state['cars'].items()}
+
         self.team = game_state['teams'][str(team_id)]
         self.score = self.team['score']
-        self.car = game_state['cars'][str(team_id)]
-        self.resources = self.car['resources']
-        self.health = self.car['health']
-        self.killed = self.car['killed']
-        self.collided = self.car['collided']
-        self.state = State(StateType.new(self.car['state']))
-        self.x = self.car['x']
-        self.y = self.car['y']
+        self.car = self.cars[str(team_id)]
+
         self.cells = []
         y = 0
         for r in self.map['cells']:
@@ -113,29 +117,53 @@ class Observation():
                 self.cells.append(cell)
                 x += 1
             y += 1
+        self.size_x = x
+        self.size_y = y
+
+    def get_car_at(self, cell):
+        for car in self.cars.values():
+            if car.x == cell.x and car.y == cell.y:
+                return car
+        return None
 
     def to_rl(self):
         o = []
-        o.append(self.health)
-        o.append(self.resources)
+        o.append(self.car.health)
+        o.append(self.car.resources)
+        o.append(self.car.collided)
+        o.append(self.car.killed)
+        c = []
         for cell in self.cells:
-            if cell.x == self.x and cell.y == self.y:
-                o.append(1)
+            c.append(int(cell.is_wall()))
+            c.append(int(cell.has_base()))
+            c.append(int(cell.has_producer()))
+            c.append(int(cell.has_resource()))
+            car = self.get_car_at(cell)
+            if car is not None:
+                c.append(int(car.state.state_type == StateType.MOVING and car.state.direction == Direction.NORTH))
+                c.append(int(car.state.state_type == StateType.MOVING and car.state.direction == Direction.SOUTH))
+                c.append(int(car.state.state_type == StateType.MOVING and car.state.direction == Direction.EAST))
+                c.append(int(car.state.state_type == StateType.MOVING and car.state.direction == Direction.WEST))
+                c.append(car.resources)
+                c.append(car.health)
+                c.append(car.collided)
             else:
-                o.append(0)
-            o.append(int(cell.is_wall()))
-            o.append(int(cell.has_base()))
-            o.append(int(cell.has_producer()))
-            o.append(int(cell.has_resource()))
+                for _ in range(7):
+                    c.append(0)
+
+        cell_index = self.car.x + self.car.y*self.size_y
+        # Center observations on the car
+        o += c[cell_index:] + c[:cell_index]
         o = np.array(o, dtype=np.int8)
         return o
 
-    # not used, I think
+    # not used
     def sample():
+        raise 'Observation.sample called! Not really tested/implemented...'
         o = []
         o.append(np.random.randint(0, 4))
         o.append(np.random.randint(0, 100))
-        nb_cells = 20 * 24
+        nb_cells = 20 * 24  # XXX
         car_cell_index = np.random.randint(0, nb_cells)  # XXX car can be on a wall
         for i in nb_cells:
             if i == car_cell_index:
@@ -160,20 +188,19 @@ class Observation():
     def to_reward(self):
         reward = 0
 
-        if self.state.state_type != StateType.MOVING:
+        if self.car.state.state_type != StateType.MOVING:
             reward -= 1
 
         if self.previous_observation is not None:
-            reward += (self.score - self.previous_observation.score) * 10
-            resources_bonus = self.resources - self.previous_observation.resources
-            if resources_bonus > 0:
-                reward += resources_bonus
+            reward += (self.score - self.previous_observation.score) * 100
+            # resources_bonus = self.car.resources - self.previous_observation.car.resources
+            # if resources_bonus > 0:
+            #     reward += resources_bonus * 10
 
-        # if self.health decreased from previous time step : -1 (XXX once the other cars are added in the observation!)
-        #    (or self.collided)
-        #     TODO
+        if self.car.collided:  # XXX tune penalty depending on health?
+            reward -= 2
 
-        if self.killed:
-            reward += -10 - self.resources*10
+        if self.car.killed:
+            reward += -10 - self.car.resources*100
 
         return reward

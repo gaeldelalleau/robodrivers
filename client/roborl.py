@@ -32,6 +32,7 @@ class RoboEnv(Env):
     def observe(self):
         json_state = self.queue.get()
         game_state = json.loads(json_state)
+        self.tick = int(game_state['tick'])
 
         observation = None
         done = False
@@ -79,7 +80,7 @@ class RoboEnv(Env):
 
 class ObservationSpace(Space):
     def __init__(self):
-        self.shape = (20*24*5 + 2,)  # XXX
+        self.shape = (20*24*11 + 4,)  # XXX
         super().__init__()
 
     def sample(self, seed=None):
